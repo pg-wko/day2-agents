@@ -15,7 +15,7 @@ The design is intentionally bounded: it specifies **five specialist agents** and
 
 ## Specialist Agents
 
-### 1. Feature Agent
+### 1. [Feature Agent](.github/agents/feature.agent.md)
 
 **Responsibility:** turn an approved, scoped feature request into an implementation-ready engineering plan.
 
@@ -25,7 +25,7 @@ The design is intentionally bounded: it specifies **five specialist agents** and
 
 **Boundaries:** does not implement code, approve requirements, or make architecture decisions beyond the requested feature.
 
-### 2. Debugging Agent
+### 2. [Debugging Agent](.github/agents/debugging.agent.md)
 
 **Responsibility:** investigate a reported failure and produce evidence-backed root-cause hypotheses.
 
@@ -35,7 +35,7 @@ The design is intentionally bounded: it specifies **five specialist agents** and
 
 **Boundaries:** does not silently change production configuration or claim a root cause without traceable evidence.
 
-### 3. Documentation Agent
+### 3. [Documentation Agent](.github/agents/documentation.agent.md)
 
 **Responsibility:** keep engineering documentation accurate after approved changes or investigations.
 
@@ -45,7 +45,7 @@ The design is intentionally bounded: it specifies **five specialist agents** and
 
 **Boundaries:** does not invent product behavior or publish documentation without a human reviewer confirming technical accuracy.
 
-### 4. Refactoring Agent
+### 4. [Refactoring Agent](.github/agents/refactoring.agent.md)
 
 **Responsibility:** identify and propose behavior-preserving improvements to code structure.
 
@@ -55,7 +55,7 @@ The design is intentionally bounded: it specifies **five specialist agents** and
 
 **Boundaries:** does not combine refactoring with new features, change public behavior, or proceed when behavior is not sufficiently covered by tests.
 
-### 5. Requirements Agent
+### 5. [Requirements Agent](.github/agents/requirements.agent.md)
 
 **Responsibility:** make a technical requirement precise, testable, and internally consistent before implementation begins.
 
@@ -69,7 +69,7 @@ The design is intentionally bounded: it specifies **five specialist agents** and
 
 Each skill is a small capability shared by multiple agents. It returns structured evidence rather than an unqualified answer.
 
-### 1. Evidence Extractor
+### 1. [Evidence Extractor](.github/skills/evidence-extractor/SKILL.md)
 
 Extracts relevant facts from logs, test output, source files, configuration, and documentation.
 
@@ -77,7 +77,7 @@ Extracts relevant facts from logs, test output, source files, configuration, and
 - **Output:** evidence items with source location, timestamp or version when available, and relevance rationale.
 - **Used by:** all five agents.
 
-### 2. Change Impact Analyzer
+### 2. [Change Impact Analyzer](.github/skills/change-impact-analyzer/SKILL.md)
 
 Finds likely affected code, tests, configuration, interfaces, and documentation for a proposed change or observed failure.
 
@@ -85,7 +85,7 @@ Finds likely affected code, tests, configuration, interfaces, and documentation 
 - **Output:** impacted artifacts, dependency path, confidence, and items requiring manual inspection.
 - **Used by:** Feature, Debugging, Documentation, and Refactoring Agents.
 
-### 3. Test and Validation Planner
+### 3. [Test and Validation Planner](.github/skills/test-validation-planner/SKILL.md)
 
 Creates a proportional plan to verify a feature, fix, refactor, or documentation claim.
 
@@ -93,7 +93,7 @@ Creates a proportional plan to verify a feature, fix, refactor, or documentation
 - **Output:** test cases, expected results, test data needs, and success criteria.
 - **Used by:** Feature, Debugging, Refactoring, and Requirements Agents.
 
-### 4. Historical Failure Matcher
+### 4. [Historical Failure Matcher](.github/skills/historical-failure-matcher/SKILL.md)
 
 Compares a current failure signature with prior incidents, fixes, postmortems, and known limitations.
 
@@ -101,7 +101,7 @@ Compares a current failure signature with prior incidents, fixes, postmortems, a
 - **Output:** ranked similar incidents, matching evidence, differences, and links to prior remediation.
 - **Used by:** Debugging and Requirements Agents.
 
-### 5. Review Packager
+### 5. [Review Packager](.github/skills/review-packager/SKILL.md)
 
 Packages an agent's work into a human-reviewable artifact.
 
