@@ -2,6 +2,8 @@
 name: diff-summarize
 description: 'Produce a human-readable summary of a code diff with risk annotations, breaking-change flags, and coverage impact. Use when the Refactoring Agent proposes a change, or when an engineer needs a review-friendly overview of a diff. Returns a structured diff summary with risk assessment.'
 argument-hint: 'The diff or changed files to summarize'
+tools: [read]
+version: "1.0"
 user-invocable: true
 ---
 

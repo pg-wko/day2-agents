@@ -2,6 +2,8 @@
 name: impact-graph
 description: 'Build a dependency graph (callers, callees, tests, and config references) for a given symbol, file, or module. Use when analyzing the blast radius of a refactoring change, understanding what a new feature will touch, or tracing how a failure propagated. Returns a structured dependency table.'
 argument-hint: 'Symbol name, file path, or module to analyze'
+tools: [search, read]
+version: "1.0"
 user-invocable: true
 ---
 

@@ -2,6 +2,7 @@
 description: "Use when turning an approved requirement into a testable feature plan: generates a feature description, test scenario descriptions (TCDs), and test case items (TST/CHK/COV). Reads code for context but does NOT implement production code."
 name: "Feature Agent"
 tools: [read, search]
+skills: [semantic-search, impact-graph, citation-extract, pattern-match-failures]
 user-invocable: true
 disable-model-invocation: false
 ---

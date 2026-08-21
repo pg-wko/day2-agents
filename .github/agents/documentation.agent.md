@@ -2,6 +2,7 @@
 description: "Use when an engineer asks 'where is X', 'what does Y do', or needs a module-level map of the codebase. Reads source files and docs, builds a cited answer with file:line references. Does NOT modify code or docs."
 name: "Documentation Agent"
 tools: [read, search]
+skills: [semantic-search, citation-extract]
 user-invocable: true
 disable-model-invocation: false
 ---

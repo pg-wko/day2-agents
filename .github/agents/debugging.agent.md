@@ -2,6 +2,7 @@
 description: "Use when triaging a failure: given a log file, error message, or test result, cluster similar past failures, rank root-cause hypotheses, and propose next diagnostic experiments. Does NOT apply fixes or modify code."
 name: "Debugging Agent"
 tools: [read, search]
+skills: [pattern-match-failures, semantic-search, citation-extract, impact-graph]
 user-invocable: true
 disable-model-invocation: false
 ---

@@ -2,6 +2,8 @@
 name: pattern-match-failures
 description: 'Match a new failure (error message, stack trace, or log signature) against a library of known historical root causes. Use when debugging a failure to check if it matches a previously seen and resolved issue. Returns ranked matches with similarity scores and known root causes.'
 argument-hint: 'Error message, stack trace, or failure signature to match'
+tools: [search, read]
+version: "1.0"
 user-invocable: true
 ---
 

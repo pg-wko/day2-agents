@@ -2,6 +2,8 @@
 name: citation-extract
 description: 'Extract exact quotes with file:line or section references from source code, logs, spec documents, and error messages. Use when an agent needs to cite evidence for a claim, requirement, or hypothesis. Ensures every output is traceable and reviewable.'
 argument-hint: 'The file, log, or document to extract citations from'
+tools: [read]
+version: "1.0"
 user-invocable: true
 ---
 

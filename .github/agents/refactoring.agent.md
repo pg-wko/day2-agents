@@ -2,6 +2,7 @@
 description: "Use when proposing a code refactor: given a target file or symbol, analyze blast radius, propose a reviewable diff with risk assessment, and block until human approval. Does NOT write directly — outputs diffs for review only."
 name: "Refactoring Agent"
 tools: [read, search]
+skills: [impact-graph, diff-summarize, semantic-search]
 user-invocable: true
 disable-model-invocation: false
 ---

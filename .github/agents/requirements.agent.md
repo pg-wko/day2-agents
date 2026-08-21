@@ -2,6 +2,7 @@
 description: "Use when extracting testable requirements from a spec, HSD ticket, PRD, or engineering document. Parses specifications, identifies testable assertions, flags ambiguity, and produces a structured requirement list with citations. Does NOT write code or tests."
 name: "Requirements Agent"
 tools: [read, search]
+skills: [semantic-search, citation-extract, diff-summarize]
 user-invocable: true
 disable-model-invocation: false
 ---

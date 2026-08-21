@@ -105,9 +105,23 @@ Spec/PRD ──▶ Requirements Agent ──▶ REQ-001, REQ-002, ...
 
 ### File Conventions
 
-- **Agents** are in `.github/agents/*.agent.md` — each has YAML frontmatter (`description`, `tools`, `user-invocable`) and a body with Constraints, Approach, and Output Format
-- **Skills** are in `.github/skills/<name>/SKILL.md` — each has YAML frontmatter (`name`, `description`, `argument-hint`) and a body with When to Use, Procedure, and Output Format
+- **Agents** are in `.github/agents/*.agent.md` — each has YAML frontmatter (`description`, `tools`, `skills`, `user-invocable`) and a body with Constraints, Approach, and Output Format
+- **Skills** are in `.github/skills/<name>/SKILL.md` — each has YAML frontmatter (`name`, `description`, `argument-hint`, `tools`, `version`) and a body with When to Use, Procedure, and Output Format
 - **Failure library** (optional) lives in `.github/failures/` as markdown files consumed by the `pattern-match-failures` skill
+
+### Tool Compatibility Validation
+
+A CI workflow (`.github/workflows/validate-agents-skills.yml`) runs `scripts/validate_agent_skill_tools.py` on every push and pull request. It checks:
+
+1. Every skill has `tools` and `version` in its frontmatter
+2. Every agent has a `skills` field listing its consumed skills
+3. Every agent's `tools` list is a superset of all its skills' `tools` lists
+
+Run it locally: `python scripts/validate_agent_skill_tools.py`
+
+### Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for rules on adding skills, agents, and the PR checklist.
 
 ---
 

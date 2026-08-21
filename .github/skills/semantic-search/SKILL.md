@@ -2,6 +2,8 @@
 name: semantic-search
 description: 'Find files, code snippets, and documentation by semantic meaning rather than exact keyword match. Use when searching for concepts like "retry logic", "authentication middleware", or "where is the database connection configured". Returns ranked results with file paths and relevance scores.'
 argument-hint: 'What to search for (concept or natural-language query)'
+tools: [search, read]
+version: "1.0"
 user-invocable: true
 ---
 
