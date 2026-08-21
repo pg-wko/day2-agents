@@ -13,6 +13,31 @@ The design is intentionally bounded: it specifies **five specialist agents** and
 - **Bounded:** each agent has one engineering responsibility and must escalate work outside that boundary.
 - **Human-approved:** agents may investigate and propose changes, but engineers review findings and approve any code or configuration changes.
 
+## Repository Structure
+
+```text
+.github/
+	agents/                  # One focused .agent.md definition per engineering role
+	skills/                  # One self-contained SKILL.md contract per reusable capability
+README.md                  # Team-facing catalogue and workflow
+CONTRIBUTING.md            # Rules for adding or changing agents and skills
+```
+
+This layout scales by allowing agents to compose existing skills instead of duplicating investigation logic. A new capability belongs in a skill when multiple agents can reuse it; it belongs in an agent only when it defines a distinct engineering responsibility.
+
+## Extension Contract
+
+All additions must preserve these contracts:
+
+- **Skills:** use `.github/skills/<lowercase-hyphenated-name>/SKILL.md`; include a discovery-focused `description`, purpose, procedure, structured output, and boundaries.
+- **Agents:** use `.github/agents/<role>.agent.md`; include a focused `description`, minimal tool permissions, required skill links, procedure, boundaries, and reviewable output.
+- **Inputs and outputs:** keep formats stable where other agents depend on them. Make incompatible output changes explicit and update every consuming agent in the same pull request.
+- **Evidence:** identify sources by file path, test name, log timestamp, incident ID, or URL so reviewers can reproduce conclusions.
+- **Safety:** skills and agents may propose work, but cannot silently approve requirements, publish documentation, or apply production changes.
+- **Scope:** prefer a new specialist agent over expanding an existing agent beyond one engineering responsibility.
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the review checklist and contribution workflow.
+
 ## Specialist Agents
 
 ### 1. [Feature Agent](.github/agents/feature.agent.md)
@@ -67,7 +92,7 @@ The design is intentionally bounded: it specifies **five specialist agents** and
 
 ## Reusable Skills
 
-Each skill is a small capability shared by multiple agents. It returns structured evidence rather than an unqualified answer.
+Each skill is a small capability shared by multiple agents. It returns structured evidence rather than an unqualified answer. Agent definitions declare the skills they consume; this catalogue describes when each skill is appropriate.
 
 ### 1. [Evidence Extractor](.github/skills/evidence-extractor/SKILL.md)
 
@@ -75,7 +100,7 @@ Extracts relevant facts from logs, test output, source files, configuration, and
 
 - **Input:** sources plus an investigation question.
 - **Output:** evidence items with source location, timestamp or version when available, and relevance rationale.
-- **Used by:** all five agents.
+- **Intended use:** any agent that needs traceable facts from engineering sources.
 
 ### 2. [Change Impact Analyzer](.github/skills/change-impact-analyzer/SKILL.md)
 
@@ -83,7 +108,7 @@ Finds likely affected code, tests, configuration, interfaces, and documentation 
 
 - **Input:** change description or failure signature and repository context.
 - **Output:** impacted artifacts, dependency path, confidence, and items requiring manual inspection.
-- **Used by:** Feature, Debugging, Documentation, and Refactoring Agents.
+- **Intended use:** agents evaluating the effect of a change or failure across engineering artifacts.
 
 ### 3. [Test and Validation Planner](.github/skills/test-validation-planner/SKILL.md)
 
@@ -91,7 +116,7 @@ Creates a proportional plan to verify a feature, fix, refactor, or documentation
 
 - **Input:** intended behavior, risks, existing tests, and validation constraints.
 - **Output:** test cases, expected results, test data needs, and success criteria.
-- **Used by:** Feature, Debugging, Refactoring, and Requirements Agents.
+- **Intended use:** agents that need a proportionate, reviewable plan to verify behavior or claims.
 
 ### 4. [Historical Failure Matcher](.github/skills/historical-failure-matcher/SKILL.md)
 
@@ -99,7 +124,7 @@ Compares a current failure signature with prior incidents, fixes, postmortems, a
 
 - **Input:** error messages, stack traces, log patterns, and historical records.
 - **Output:** ranked similar incidents, matching evidence, differences, and links to prior remediation.
-- **Used by:** Debugging and Requirements Agents.
+- **Intended use:** agents comparing a current failure or risk against prior incidents and remediations.
 
 ### 5. [Review Packager](.github/skills/review-packager/SKILL.md)
 
@@ -107,7 +132,7 @@ Packages an agent's work into a human-reviewable artifact.
 
 - **Input:** findings, evidence, assumptions, proposed actions, and validation results.
 - **Output:** summary, decision needed, risks, confidence, traceable references, and explicit out-of-scope items.
-- **Used by:** all five agents.
+- **Intended use:** any agent handing findings to a human engineer for review or decision.
 
 ## Review Workflow
 
@@ -118,4 +143,4 @@ Packages an agent's work into a human-reviewable artifact.
 
 ## Repository Collaboration
 
-This repository is intended to be public so teammates can review agent boundaries, skill contracts, and proposed refinements through issues and pull requests. Keep future contributions focused on a specific agent or reusable skill, with examples and validation criteria for any changed behavior.
+This repository is intended to be public so teammates can review agent boundaries, skill contracts, and proposed refinements through issues and pull requests. Keep future contributions focused on a specific agent or reusable skill, with examples and validation criteria for any changed behavior. Follow the contribution workflow in [CONTRIBUTING.md](CONTRIBUTING.md).
