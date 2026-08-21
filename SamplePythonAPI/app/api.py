@@ -1,3 +1,5 @@
+"""FastAPI route definitions for the Ticket REST API."""
+
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 
 from app.database import TicketNotFoundError, TicketRepository
@@ -5,6 +7,118 @@ from app.models import Ticket, TicketCreate, TicketFilters, TicketPriority, Tick
 
 
 def create_api_router(repository: TicketRepository) -> APIRouter:
+    """Create and configure the FastAPI APIRouter for ticket operations.
+
+    Args:
+        repository: The TicketRepository dependency instance.
+
+    Returns:
+        APIRouter: Configured router with ticket CRUD endpoints.
+    """
+    """Create and configure the FastAPI APIRouter for ticket operations.
+
+    Args:
+        repository: The TicketRepository dependency instance.
+
+    Returns:
+        APIRouter: Configured router with ticket CRUD endpoints.
+    """
+    """Create and configure the FastAPI APIRouter for ticket operations.
+
+    Args:
+        repository: The TicketRepository dependency instance.
+
+    Returns:
+        APIRouter: Configured router with ticket CRUD endpoints.
+    """
+    """Create and configure the FastAPI APIRouter for ticket operations.
+
+    Args:
+        repository: The TicketRepository dependency instance.
+
+    Returns:
+        APIRouter: Configured router with ticket CRUD endpoints.
+    """
+    """Create and configure the FastAPI APIRouter for ticket operations.
+
+    Args:
+        repository: The TicketRepository dependency instance.
+
+    Returns:
+        APIRouter: Configured router with ticket CRUD endpoints.
+    """
+    """Create and configure the FastAPI APIRouter for ticket operations.
+
+    Args:
+        repository: The TicketRepository dependency instance.
+
+    Returns:
+        APIRouter: Configured router with ticket CRUD endpoints.
+    """
+    """Create and configure the FastAPI APIRouter for ticket operations.
+
+    Args:
+        repository: The TicketRepository dependency instance.
+
+    Returns:
+        APIRouter: Configured router with ticket CRUD endpoints.
+    """
+    """Create and configure the FastAPI APIRouter for ticket operations.
+
+    Args:
+        repository: The TicketRepository dependency instance.
+
+    Returns:
+        APIRouter: Configured router with ticket CRUD endpoints.
+    """
+    """Create and configure the FastAPI APIRouter for ticket operations.
+
+    Args:
+        repository: The TicketRepository dependency instance.
+
+    Returns:
+        APIRouter: Configured router with ticket CRUD endpoints.
+    """
+    """Create and configure the FastAPI APIRouter for ticket operations.
+
+    Args:
+        repository: The TicketRepository dependency instance.
+
+    Returns:
+        APIRouter: Configured router with ticket CRUD endpoints.
+    """
+    """Create and configure the FastAPI APIRouter for ticket operations.
+
+    Args:
+        repository: The TicketRepository dependency instance.
+
+    Returns:
+        APIRouter: Configured router with ticket CRUD endpoints.
+    """
+    """Create and configure the FastAPI APIRouter for ticket operations.
+
+    Args:
+        repository: The TicketRepository dependency instance.
+
+    Returns:
+        APIRouter: Configured router with ticket CRUD endpoints.
+    """
+    """Create and configure the FastAPI APIRouter for ticket operations.
+
+    Args:
+        repository: The TicketRepository dependency instance.
+
+    Returns:
+        APIRouter: Configured router with ticket CRUD endpoints.
+    """
+    """Create and configure the FastAPI APIRouter for ticket operations.
+
+    Args:
+        repository: The TicketRepository dependency instance.
+
+    Returns:
+        APIRouter: Configured router with ticket CRUD endpoints.
+    """
     router = APIRouter(prefix="/api", tags=["tickets"])
 
     def get_repository() -> TicketRepository:

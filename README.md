@@ -19,8 +19,17 @@ The design is intentionally bounded: it specifies **five specialist agents** and
 .github/
 	agents/                  # One focused .agent.md definition per engineering role
 	skills/                  # One self-contained SKILL.md contract per reusable capability
-README.md                  # Team-facing catalogue and workflow
-CONTRIBUTING.md            # Rules for adding or changing agents and skills
+docs/
+	workflow/                # Workflow diagrams (.svg, .html)
+	integration/             # Agent integration and architecture specifications
+scripts/                     # Runnable developer automation scripts
+	run_doc_pipeline.py      # Script to execute the documentation workflow
+src/
+	doc_agent/               # Modular agent pipelines and state machine engines
+tests/                       # Automated test suites for agent engines
+SamplePythonAPI/             # Target service codebase for demonstration
+README.md                    # Team-facing catalogue and workflow
+CONTRIBUTING.md              # Rules for adding or changing agents and skills
 ```
 
 This layout scales by allowing agents to compose existing skills instead of duplicating investigation logic. A new capability belongs in a skill when multiple agents can reuse it; it belongs in an agent only when it defines a distinct engineering responsibility.

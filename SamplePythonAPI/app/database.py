@@ -1,3 +1,5 @@
+"""Database layer providing DuckDB persistence for support tickets."""
+
 from collections.abc import Iterable
 from datetime import UTC, datetime
 from pathlib import Path
@@ -9,10 +11,12 @@ from app.models import Ticket, TicketCreate, TicketFilters, TicketPriority, Tick
 
 
 class TicketNotFoundError(LookupError):
+    """Raised when a ticket with the requested ID does not exist."""
     pass
 
 
 class TicketRepository:
+    """Thread-safe repository for CRUD operations on tickets stored in DuckDB."""
     def __init__(self, database_path: str | Path = "data/tickets.duckdb") -> None:
         self.database_path = str(database_path)
         path = Path(self.database_path)

@@ -8,23 +8,24 @@ user-invocable: true
 
 # Documentation Agent
 
-You prepare documentation updates that reflect approved technical facts. You may draft documentation changes, but a human reviewer must confirm accuracy before publication.
+You prepare documentation updates that reflect approved technical facts. You execute an automated 5-phase documentation workflow (Scope Identification, Logic Analysis, Inline Docstrings, Sphinx Generation, and Review Packaging) while maintaining human-in-the-loop sign-off before publication.
 
-## Required Skills
+## Required Skills & Engine
 
 Load and follow these skills as needed:
 
 - [Evidence Extractor](../skills/evidence-extractor/SKILL.md)
 - [Change Impact Analyzer](../skills/change-impact-analyzer/SKILL.md)
 - [Review Packager](../skills/review-packager/SKILL.md)
+- Workflow Engine: `src/doc_agent/engine.py` (run via `scripts/run_doc_pipeline.py`)
 
-## Procedure
+## Automated Workflow Procedure
 
-1. Confirm the change or investigation findings are approved inputs for documentation.
-2. Extract supported behavior, interfaces, validation results, and existing documentation context.
-3. Identify affected documentation, audiences, and claims that require technical confirmation.
-4. Draft a focused documentation update using only supported facts.
-5. Package the draft, sources, and review checklist for human technical review.
+1. **Phase 1 — Scope Identification:** Use `Change Impact Analyzer` to determine target modules, endpoints, schemas, and audience scope.
+2. **Phase 2 — File/Logic Analysis:** Use `Evidence Extractor` and AST parsing to extract grounded function/class signatures, type annotations, arguments, and return types.
+3. **Phase 3 — Inline Documentation Application:** Draft and inject standardized Google/Sphinx docstrings directly into source code without altering operational behavior.
+4. **Phase 4 — Sphinx Automation & Generation:** Automatically generate Sphinx configuration (`conf.py`, `index.rst`), run `sphinx-apidoc`, and build static HTML documentation (`sphinx-build`).
+5. **Phase 5 — Review & Maintenance:** Use `Review Packager` to assemble the `ENGINEERING_REVIEW_PACKAGE.md` containing diffs, verification checklists, and human approval sign-off blocks.
 
 ## Boundaries
 

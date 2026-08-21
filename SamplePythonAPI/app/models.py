@@ -1,3 +1,5 @@
+"""Data models and enum schemas for the ticketing domain."""
+
 from datetime import datetime
 from enum import StrEnum
 
@@ -5,6 +7,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class TicketStatus(StrEnum):
+    """Enumeration of possible ticket statuses."""
     open = "open"
     in_progress = "in_progress"
     resolved = "resolved"
@@ -12,6 +15,7 @@ class TicketStatus(StrEnum):
 
 
 class TicketPriority(StrEnum):
+    """Enumeration of ticket priority levels."""
     low = "low"
     medium = "medium"
     high = "high"
@@ -19,6 +23,7 @@ class TicketPriority(StrEnum):
 
 
 class TicketCreate(BaseModel):
+    """Schema for creating a new support ticket."""
     title: str = Field(min_length=3, max_length=120)
     description: str = Field(min_length=3, max_length=2000)
     requester: str = Field(min_length=2, max_length=80)
@@ -26,6 +31,7 @@ class TicketCreate(BaseModel):
 
 
 class TicketUpdate(BaseModel):
+    """Schema for updating an existing support ticket with optional fields."""
     title: str | None = Field(default=None, min_length=3, max_length=120)
     description: str | None = Field(default=None, min_length=3, max_length=2000)
     requester: str | None = Field(default=None, min_length=2, max_length=80)
@@ -47,6 +53,7 @@ class Ticket(BaseModel):
 
 
 class TicketFilters(BaseModel):
+    """Query filters for searching and listing tickets."""
     status: TicketStatus | None = None
     priority: TicketPriority | None = None
     search: str | None = None
