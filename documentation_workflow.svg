@@ -1,0 +1,243 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 1520" width="100%" height="100%" style="background-color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="humanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef3c7"/>
+      <stop offset="100%" stop-color="#fde68a"/>
+    </linearGradient>
+    <linearGradient id="agentGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="toolGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="artifactGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#064e3b"/>
+      <stop offset="100%" stop-color="#022c22"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </linearGradient>
+
+    <!-- Drop Shadow Filters -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+    <filter id="glowAgent" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#38bdf8" flood-opacity="0.35"/>
+    </filter>
+
+    <!-- Markers -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#38bdf8"/>
+    </marker>
+    <marker id="arrowReturn" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#f87171"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1 L 10 5 L 0 9 z" fill="#34d399"/>
+    </marker>
+  </defs>
+
+  <!-- Title Banner -->
+  <g transform="translate(60, 40)">
+    <text x="530" y="30" text-anchor="middle" font-size="28" font-weight="700" fill="#f8fafc" letter-spacing="0.5">Automated Documentation Workflow</text>
+    <text x="530" y="58" text-anchor="middle" font-size="15" fill="#94a3b8">End-to-End lifecycle mapping the Documentation Agent, reusable skills, and human checkpoints</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(90, 115)">
+    <rect x="0" y="0" width="1000" height="50" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1"/>
+    
+    <!-- Legend items -->
+    <rect x="25" y="15" width="20" height="20" rx="4" fill="#38bdf8" fill-opacity="0.15" stroke="#38bdf8" stroke-width="2" stroke-dasharray="3 3"/>
+    <text x="55" y="30" font-size="13" font-weight="600" fill="#bae6fd">Documentation Agent</text>
+
+    <rect x="265" y="15" width="20" height="20" rx="4" fill="url(#humanGrad)" stroke="#d97706" stroke-width="1.5"/>
+    <text x="295" y="30" font-size="13" font-weight="600" fill="#fde68a">Human Action / Gate</text>
+
+    <rect x="495" y="15" width="20" height="20" rx="4" fill="url(#toolGrad)" stroke="#64748b" stroke-width="1.5"/>
+    <text x="525" y="30" font-size="13" font-weight="600" fill="#cbd5e1">Tool / Pipeline Step</text>
+
+    <rect x="735" y="15" width="20" height="20" rx="4" fill="url(#artifactGrad)" stroke="#059669" stroke-width="1.5"/>
+    <text x="765" y="30" font-size="13" font-weight="600" fill="#6ee7b7">Artifact / Deliverable</text>
+  </g>
+
+  <!-- PHASE 1 -->
+  <g transform="translate(90, 195)">
+    <rect x="0" y="0" width="1000" height="200" rx="12" fill="url(#cardGrad)" stroke="#3b82f6" stroke-opacity="0.4" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="1000" height="34" rx="12" fill="#1d4ed8" fill-opacity="0.25"/>
+    <text x="20" y="23" font-size="14" font-weight="700" fill="#60a5fa" letter-spacing="0.5">PHASE 1: SCOPE IDENTIFICATION</text>
+
+    <!-- Node 1: Input Trigger -->
+    <rect x="40" y="60" width="220" height="95" rx="8" fill="url(#humanGrad)" stroke="#d97706" stroke-width="2" filter="url(#shadow)"/>
+    <text x="150" y="93" text-anchor="middle" font-size="14" font-weight="700" fill="#78350f">Approved Change</text>
+    <text x="150" y="113" text-anchor="middle" font-size="12" fill="#92400e">Feature / Bugfix / Investigation</text>
+    <text x="150" y="133" text-anchor="middle" font-size="11" font-weight="500" fill="#b45309">Trigger Event</text>
+
+    <!-- Connection Arrow -->
+    <line x1="260" y1="107" x2="350" y2="107" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+    <!-- Node 2: Agent Phase 1 -->
+    <rect x="360" y="55" width="290" height="110" rx="8" fill="url(#agentGrad)" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4 4" filter="url(#glowAgent)"/>
+    <text x="505" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#38bdf8">Documentation Agent</text>
+    <text x="505" y="108" text-anchor="middle" font-size="12" fill="#94a3b8">Skill: <tspan fill="#bae6fd" font-weight="600">change-impact-analyzer</tspan></text>
+    <text x="505" y="128" text-anchor="middle" font-size="11" fill="#cbd5e1">• Identifies modified interfaces</text>
+    <text x="505" y="145" text-anchor="middle" font-size="11" fill="#cbd5e1">• Maps target audience &amp; affected docs</text>
+
+    <!-- Connection Arrow -->
+    <line x1="650" y1="107" x2="730" y2="107" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+    <!-- Node 3: Artifact -->
+    <rect x="740" y="65" width="220" height="85" rx="8" fill="url(#artifactGrad)" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+    <text x="850" y="98" text-anchor="middle" font-size="13" font-weight="700" fill="#a7f3d0">Doc Scope Specification</text>
+    <text x="850" y="120" text-anchor="middle" font-size="11" fill="#6ee7b7">Target files &amp; audiences mapped</text>
+  </g>
+
+  <!-- Connecting Line P1 -> P2 -->
+  <path d="M 590 395 L 590 435" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- PHASE 2 -->
+  <g transform="translate(90, 435)">
+    <rect x="0" y="0" width="1000" height="220" rx="12" fill="url(#cardGrad)" stroke="#3b82f6" stroke-opacity="0.4" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="1000" height="34" rx="12" fill="#1d4ed8" fill-opacity="0.25"/>
+    <text x="20" y="23" font-size="14" font-weight="700" fill="#60a5fa" letter-spacing="0.5">PHASE 2: FILE &amp; LOGIC ANALYSIS</text>
+
+    <!-- Source Code / Repo Inputs -->
+    <rect x="40" y="60" width="220" height="110" rx="8" fill="url(#toolGrad)" stroke="#64748b" stroke-width="2" filter="url(#shadow)"/>
+    <text x="150" y="90" text-anchor="middle" font-size="14" font-weight="700" fill="#f8fafc">Source Codebase</text>
+    <text x="150" y="112" text-anchor="middle" font-size="12" fill="#94a3b8">• Python API / Endpoints</text>
+    <text x="150" y="130" text-anchor="middle" font-size="12" fill="#94a3b8">• Data Models &amp; Schemas</text>
+    <text x="150" y="148" text-anchor="middle" font-size="12" fill="#94a3b8">• Test Validation Results</text>
+
+    <!-- Connection Arrow -->
+    <line x1="260" y1="115" x2="350" y2="115" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+    <!-- Node 2: Agent Phase 2 -->
+    <rect x="360" y="55" width="290" height="125" rx="8" fill="url(#agentGrad)" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4 4" filter="url(#glowAgent)"/>
+    <text x="505" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#38bdf8">Documentation Agent</text>
+    <text x="505" y="108" text-anchor="middle" font-size="12" fill="#94a3b8">Skill: <tspan fill="#bae6fd" font-weight="600">evidence-extractor</tspan></text>
+    <text x="505" y="128" text-anchor="middle" font-size="11" fill="#cbd5e1">• Extracts AST &amp; function signatures</text>
+    <text x="505" y="145" text-anchor="middle" font-size="11" fill="#cbd5e1">• Verifies parameters, returns &amp; errors</text>
+    <text x="505" y="162" text-anchor="middle" font-size="11" fill="#fca5a5">🚫 Rejects unsupported claims</text>
+
+    <!-- Connection Arrow -->
+    <line x1="650" y1="115" x2="730" y2="115" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+    <!-- Node 3: Artifact -->
+    <rect x="740" y="65" width="220" height="100" rx="8" fill="url(#artifactGrad)" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+    <text x="850" y="98" text-anchor="middle" font-size="13" font-weight="700" fill="#a7f3d0">Extracted Fact Base</text>
+    <text x="850" y="122" text-anchor="middle" font-size="11" fill="#6ee7b7">• Verified API contracts</text>
+    <text x="850" y="140" text-anchor="middle" font-size="11" fill="#6ee7b7">• Parameters &amp; Type definitions</text>
+  </g>
+
+  <!-- Connecting Line P2 -> P3 -->
+  <path d="M 590 655 L 590 695" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- PHASE 3 -->
+  <g transform="translate(90, 695)">
+    <rect x="0" y="0" width="1000" height="200" rx="12" fill="url(#cardGrad)" stroke="#3b82f6" stroke-opacity="0.4" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="1000" height="34" rx="12" fill="#1d4ed8" fill-opacity="0.25"/>
+    <text x="20" y="23" font-size="14" font-weight="700" fill="#60a5fa" letter-spacing="0.5">PHASE 3: INLINE DOCUMENTATION APPLICATION</text>
+
+    <!-- Node 1: Agent Drafts Docs -->
+    <rect x="220" y="55" width="300" height="110" rx="8" fill="url(#agentGrad)" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4 4" filter="url(#glowAgent)"/>
+    <text x="370" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#38bdf8">Documentation Agent</text>
+    <text x="370" y="108" text-anchor="middle" font-size="12" fill="#94a3b8">Drafting &amp; Formatting Engine</text>
+    <text x="370" y="128" text-anchor="middle" font-size="11" fill="#cbd5e1">• Generates Sphinx/Google docstrings</text>
+    <text x="370" y="145" text-anchor="middle" font-size="11" fill="#cbd5e1">• Formats module, class &amp; function headers</text>
+
+    <!-- Connection Arrow -->
+    <line x1="520" y1="110" x2="620" y2="110" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+    <!-- Node 2: Source Code Patch -->
+    <rect x="630" y="60" width="260" height="100" rx="8" fill="url(#toolGrad)" stroke="#64748b" stroke-width="2" filter="url(#shadow)"/>
+    <text x="760" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#f8fafc">Documented Source Code</text>
+    <text x="760" y="112" text-anchor="middle" font-size="11" fill="#94a3b8">• Type-annotated signatures</text>
+    <text x="760" y="130" text-anchor="middle" font-size="11" fill="#94a3b8">• Standardized docstrings applied</text>
+  </g>
+
+  <!-- Connecting Line P3 -> P4 -->
+  <path d="M 590 895 L 590 935" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- PHASE 4 -->
+  <g transform="translate(90, 935)">
+    <rect x="0" y="0" width="1000" height="200" rx="12" fill="url(#cardGrad)" stroke="#3b82f6" stroke-opacity="0.4" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="1000" height="34" rx="12" fill="#1d4ed8" fill-opacity="0.25"/>
+    <text x="20" y="23" font-size="14" font-weight="700" fill="#60a5fa" letter-spacing="0.5">PHASE 4: SPHINX AUTOMATION &amp; GENERATION</text>
+
+    <!-- Sphinx Tool Step 1 -->
+    <rect x="80" y="60" width="240" height="95" rx="8" fill="url(#toolGrad)" stroke="#64748b" stroke-width="2" filter="url(#shadow)"/>
+    <text x="200" y="93" text-anchor="middle" font-size="13" font-weight="700" fill="#f8fafc">sphinx-apidoc</text>
+    <text x="200" y="116" text-anchor="middle" font-size="11" fill="#94a3b8">Extracts modules to .rst stubs</text>
+    <text x="200" y="134" text-anchor="middle" font-size="11" fill="#64748b">Automatic API structure</text>
+
+    <!-- Arrow -->
+    <line x1="320" y1="107" x2="390" y2="107" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+    <!-- Sphinx Tool Step 2 -->
+    <rect x="400" y="60" width="240" height="95" rx="8" fill="url(#toolGrad)" stroke="#64748b" stroke-width="2" filter="url(#shadow)"/>
+    <text x="520" y="93" text-anchor="middle" font-size="13" font-weight="700" fill="#f8fafc">sphinx-build / make html</text>
+    <text x="520" y="116" text-anchor="middle" font-size="11" fill="#94a3b8">Parses autodoc directives</text>
+    <text x="520" y="134" text-anchor="middle" font-size="11" fill="#64748b">Compiles theme &amp; cross-refs</text>
+
+    <!-- Arrow -->
+    <line x1="640" y1="107" x2="710" y2="107" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+    <!-- Generated HTML -->
+    <rect x="720" y="60" width="230" height="95" rx="8" fill="url(#artifactGrad)" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+    <text x="835" y="93" text-anchor="middle" font-size="13" font-weight="700" fill="#a7f3d0">Generated Documentation</text>
+    <text x="835" y="116" text-anchor="middle" font-size="11" fill="#6ee7b7">• Static HTML web portal</text>
+    <text x="835" y="134" text-anchor="middle" font-size="11" fill="#6ee7b7">• Searchable API reference</text>
+  </g>
+
+  <!-- Connecting Line P4 -> P5 -->
+  <path d="M 590 1135 L 590 1175" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- PHASE 5 -->
+  <g transform="translate(90, 1175)">
+    <rect x="0" y="0" width="1000" height="270" rx="12" fill="url(#cardGrad)" stroke="#3b82f6" stroke-opacity="0.4" stroke-width="1.5" filter="url(#shadow)"/>
+    <rect x="0" y="0" width="1000" height="34" rx="12" fill="#1d4ed8" fill-opacity="0.25"/>
+    <text x="20" y="23" font-size="14" font-weight="700" fill="#60a5fa" letter-spacing="0.5">PHASE 5: REVIEW &amp; MAINTENANCE</text>
+
+    <!-- Node 1: Agent Package -->
+    <rect x="40" y="55" width="270" height="120" rx="8" fill="url(#agentGrad)" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4 4" filter="url(#glowAgent)"/>
+    <text x="175" y="85" text-anchor="middle" font-size="14" font-weight="700" fill="#38bdf8">Documentation Agent</text>
+    <text x="175" y="108" text-anchor="middle" font-size="12" fill="#94a3b8">Skill: <tspan fill="#bae6fd" font-weight="600">review-packager</tspan></text>
+    <text x="175" y="128" text-anchor="middle" font-size="11" fill="#cbd5e1">• Prepares patch &amp; evidence links</text>
+    <text x="175" y="145" text-anchor="middle" font-size="11" fill="#cbd5e1">• Compiles checklist of claims</text>
+
+    <!-- Arrow -->
+    <line x1="310" y1="115" x2="360" y2="115" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+    <!-- Review Package Artifact -->
+    <rect x="370" y="65" width="200" height="100" rx="8" fill="url(#artifactGrad)" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+    <text x="470" y="98" text-anchor="middle" font-size="13" font-weight="700" fill="#a7f3d0">Engineering Package</text>
+    <text x="470" y="120" text-anchor="middle" font-size="11" fill="#6ee7b7">• Change diff &amp; risks</text>
+    <text x="470" y="138" text-anchor="middle" font-size="11" fill="#6ee7b7">• Verification checklist</text>
+
+    <!-- Arrow -->
+    <line x1="570" y1="115" x2="620" y2="115" stroke="#38bdf8" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+    <!-- Human Sign-off -->
+    <rect x="630" y="60" width="160" height="110" rx="8" fill="url(#humanGrad)" stroke="#d97706" stroke-width="2" filter="url(#shadow)"/>
+    <text x="710" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#78350f">Human Review</text>
+    <text x="710" y="112" text-anchor="middle" font-size="11" fill="#92400e">Engineer sign-off</text>
+    <text x="710" y="130" text-anchor="middle" font-size="11" fill="#92400e">&amp; accuracy check</text>
+
+    <!-- Arrow (Approved) -->
+    <line x1="790" y1="115" x2="840" y2="115" stroke="#34d399" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+
+    <!-- Publish -->
+    <rect x="850" y="65" width="125" height="100" rx="8" fill="url(#artifactGrad)" stroke="#10b981" stroke-width="2" filter="url(#shadow)"/>
+    <text x="912" y="105" text-anchor="middle" font-size="13" font-weight="700" fill="#a7f3d0">Publish</text>
+    <text x="912" y="128" text-anchor="middle" font-size="11" fill="#6ee7b7">CI/CD Deploy</text>
+
+    <!-- Feedback Loop Path (Changes Requested) -->
+    <path d="M 710 170 L 710 220 L -30 220 L -30 -980 L 40 -980" fill="none" stroke="#f87171" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#arrowReturn)"/>
+    <text x="350" y="240" text-anchor="middle" font-size="12" font-weight="600" fill="#f87171">Changes Requested / Verification Failed (Loops back to Phase 1)</text>
+  </g>
+</svg>
