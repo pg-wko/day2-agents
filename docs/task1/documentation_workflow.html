@@ -10,18 +10,13 @@
   :root {
     --bg:        #0f1117;
     --surface:   #1a1d27;
-    --surface-2: #232733;
     --border:    #353a4a;
     --text:      #e4e7ef;
     --text-dim:  #9ca3b4;
     --accent:    #6c8eef;
-    --p1: #4C72B0;  --p1-d: #3a5a94;
-    --p2: #55A868;  --p2-d: #428a52;
-    --p3: #C44E52;  --p3-d: #a23d41;
-    --p4: #8172B2;  --p4-d: #655a92;
-    --p5: #CCB974;  --p5-d: #a8975a;
-    --amber: #f0a04b;
-    --amber-d: #c47e33;
+    --p1: #4C72B0;  --p2: #55A868;  --p3: #C44E52;
+    --p4: #8172B2;  --p5: #CCB974;
+    --amber: #f0a04b;  --amber-d: #c47e33;
   }
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -33,236 +28,252 @@
   }
 
   /* ── Header ──────────────────────────────────────────────────── */
-  header { text-align: center; max-width: 1200px; margin: 0 auto 2.5rem; }
+  header { text-align: center; max-width: 1400px; margin: 0 auto 2rem; }
   header h1 {
     font-size: 2rem; font-weight: 700; letter-spacing: -.02em;
     background: linear-gradient(135deg, #6c8eef, #a78bfa, #f0a04b);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
-  header p { color: var(--text-dim); margin-top: .5rem; font-size: .95rem; }
+  header p { color: var(--text-dim); margin-top: .5rem; font-size: .9rem; }
 
   /* ── Legend ──────────────────────────────────────────────────── */
   .legend {
     display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;
-    margin-bottom: 2rem; font-size: .82rem; color: var(--text-dim);
+    margin-bottom: 1.5rem; font-size: .82rem; color: var(--text-dim);
   }
   .legend-item { display: flex; align-items: center; gap: .4rem; }
-  .legend-swatch {
-    width: 14px; height: 14px; border-radius: 4px; display: inline-block;
-  }
-  .legend-arrow {
-    width: 28px; height: 0; border-top: 2.5px solid #555; display: inline-block;
-    position: relative;
-  }
-  .legend-arrow.solid { border-top-style: solid; border-color: #6c8eef; }
-  .legend-arrow.dashed { border-top-style: dashed; border-color: var(--amber); }
+  .legend-swatch { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
 
-  /* ── Workflow container ──────────────────────────────────────── */
-  .workflow {
-    max-width: 1200px; margin: 0 auto;
-    display: flex; flex-direction: column; gap: 0;
-    position: relative;
-  }
-
-  /* ── Phase row ───────────────────────────────────────────────── */
-  .phase-row {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 1rem;
-    position: relative;
-    z-index: 2;
-  }
-  @media (max-width: 900px) {
-    .phase-row { grid-template-columns: 1fr; gap: 1.5rem; }
-  }
-
-  /* ── Phase card ──────────────────────────────────────────────── */
-  .phase-card {
+  /* ── SVG Flow Diagram ────────────────────────────────────────── */
+  .flow-diagram {
+    max-width: 1400px; margin: 0 auto 2.5rem;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 0;
-    cursor: pointer;
-    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
-    overflow: hidden;
-    position: relative;
+    border-radius: 16px;
+    padding: 1.5rem;
+    overflow-x: auto;
   }
-  .phase-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 32px rgba(0,0,0,.35);
-    border-color: var(--accent);
-  }
-  .phase-card.active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 2px rgba(108,142,239,.3), 0 12px 32px rgba(0,0,0,.35);
-  }
+  .flow-diagram svg { display: block; margin: 0 auto; min-width: 900px; }
 
-  .phase-header {
-    padding: 1rem 1.1rem .6rem;
-    border-top: 5px solid var(--phase-color);
+  /* ── Phase detail cards (click to expand) ─────────────────────── */
+  .cards-section { max-width: 1400px; margin: 0 auto; }
+  .cards-section h2 {
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-dim);
   }
-  .phase-num {
-    font-size: .72rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .08em; color: var(--phase-color); margin-bottom: .25rem;
+  .phase-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem;
   }
+  @media (max-width: 1000px) { .phase-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 640px) { .phase-grid { grid-template-columns: 1fr; } }
+
+  .phase-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; cursor: pointer; overflow: hidden; position: relative;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .phase-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,.35); border-color: var(--accent); }
+  .phase-card.active { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(108,142,239,.3), 0 12px 32px rgba(0,0,0,.35); }
+  .phase-header { padding: 1rem 1.1rem .6rem; border-top: 5px solid var(--phase-color); }
+  .phase-num { font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--phase-color); margin-bottom: .25rem; }
   .phase-title { font-size: 1.05rem; font-weight: 700; }
   .phase-subtitle { font-size: .8rem; color: var(--text-dim); margin-top: .15rem; }
-
   .phase-body { padding: .2rem 1.1rem 1rem; }
   .phase-details { list-style: none; padding: 0; }
-  .phase-details li {
-    font-size: .8rem; color: var(--text-dim); padding: .2rem 0;
-    display: flex; gap: .4rem; align-items: flex-start;
-  }
-  .phase-details li::before {
-    content: "▸"; color: var(--phase-color); font-size: .7rem; margin-top: .2rem;
-  }
-
-  /* Expandable section */
-  .phase-expand {
-    max-height: 0; overflow: hidden;
-    transition: max-height .35s ease, padding .25s ease;
-    padding: 0 1.1rem;
-    border-top: 1px solid transparent;
-  }
-  .phase-card.expanded .phase-expand {
-    max-height: 600px;
-    padding: .8rem 1.1rem 1.2rem;
-    border-top: 1px solid var(--border);
-  }
+  .phase-details li { font-size: .8rem; color: var(--text-dim); padding: .2rem 0; display: flex; gap: .4rem; align-items: flex-start; }
+  .phase-details li::before { content: "▸"; color: var(--phase-color); font-size: .7rem; margin-top: .2rem; }
+  .phase-expand { max-height: 0; overflow: hidden; transition: max-height .35s ease, padding .25s ease; padding: 0 1.1rem; border-top: 1px solid transparent; }
+  .phase-card.expanded .phase-expand { max-height: 600px; padding: .8rem 1.1rem 1.2rem; border-top: 1px solid var(--border); }
   .phase-steps { list-style: none; counter-reset: step; padding: 0; }
-  .phase-steps li {
-    counter-increment: step;
-    font-size: .8rem; color: var(--text); padding: .35rem 0;
-    display: flex; gap: .5rem;
-  }
-  .phase-steps li::before {
-    content: counter(step) ".";
-    font-weight: 700; color: var(--phase-color); min-width: 1.1rem;
-  }
-  .agent-box {
-    margin-top: .8rem;
-    background: rgba(240,160,75,.08);
-    border: 1px dashed var(--amber-d);
-    border-radius: 8px;
-    padding: .55rem .7rem;
-  }
-  .agent-box .agent-label {
-    font-size: .68rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .06em; color: var(--amber);
-  }
+  .phase-steps li { counter-increment: step; font-size: .8rem; color: var(--text); padding: .35rem 0; display: flex; gap: .5rem; }
+  .phase-steps li::before { content: counter(step) "."; font-weight: 700; color: var(--phase-color); min-width: 1.1rem; }
+  .agent-box { margin-top: .8rem; background: rgba(240,160,75,.08); border: 1px dashed var(--amber-d); border-radius: 8px; padding: .55rem .7rem; }
+  .agent-box .agent-label { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--amber); }
   .agent-box .agent-text { font-size: .78rem; color: var(--text-dim); margin-top: .2rem; }
-  .feedback-note {
-    margin-top: .6rem; font-size: .75rem; color: var(--amber);
-    display: flex; gap: .35rem; align-items: flex-start;
-  }
+  .feedback-note { margin-top: .6rem; font-size: .75rem; color: var(--amber); display: flex; gap: .35rem; align-items: flex-start; }
   .feedback-note::before { content: "↻"; font-size: .9rem; }
 
-  /* ── Arrows between phases (desktop) ─────────────────────────── */
-  .arrow-bar {
-    display: flex; align-items: center; justify-content: center;
-    height: 38px; position: relative; z-index: 1;
-  }
-  .arrow-bar .seq-arrow {
-    font-size: 1.5rem; color: var(--accent); opacity: .6;
-    transition: opacity .3s ease, transform .3s ease;
-  }
-  .phase-card:hover ~ .seq-arrow,
-  .arrow-bar:hover .seq-arrow { opacity: 1; transform: scale(1.1); }
-  @media (max-width: 900px) { .arrow-bar { display: none; } }
-
-  /* ── Feedback loop section ───────────────────────────────────── */
-  .feedback-section {
-    max-width: 1200px; margin: 2.5rem auto 0;
-  }
-  .feedback-section h2 {
-    font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;
-    display: flex; align-items: center; gap: .5rem;
-  }
-  .feedback-section h2::before {
-    content: "↻"; color: var(--amber); font-size: 1.3rem;
-  }
-  .feedback-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
-  }
+  /* ── Feedback loops section ───────────────────────────────────── */
+  .feedback-section { max-width: 1400px; margin: 2.5rem auto 0; }
+  .feedback-section h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+  .feedback-section h2::before { content: "↻"; color: var(--amber); font-size: 1.3rem; }
+  .feedback-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
   @media (max-width: 700px) { .feedback-grid { grid-template-columns: 1fr; } }
   .feedback-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--amber-d);
-    border-radius: 10px;
-    padding: .9rem 1.1rem;
+    background: var(--surface); border: 1px solid var(--border);
+    border-left: 4px solid var(--amber-d); border-radius: 10px; padding: .9rem 1.1rem;
     transition: border-color .25s ease, transform .25s ease;
-    cursor: default;
   }
   .feedback-card:hover { transform: translateY(-3px); border-left-color: var(--amber); }
-  .feedback-card .from-to {
-    font-size: .75rem; font-weight: 700; color: var(--amber); margin-bottom: .3rem;
-  }
+  .feedback-card .from-to { font-size: .75rem; font-weight: 700; color: var(--amber); margin-bottom: .3rem; }
   .feedback-card .desc { font-size: .82rem; color: var(--text-dim); }
 
-  /* ── Detail panel ────────────────────────────────────────────── */
-  .detail-panel {
-    max-width: 1200px; margin: 2.5rem auto 0;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.5rem 1.8rem;
-    min-height: 120px;
-    transition: border-color .3s ease;
-  }
-  .detail-panel h3 { font-size: 1.1rem; margin-bottom: .8rem; }
-  .detail-panel .detail-agent {
-    background: rgba(240,160,75,.08);
-    border: 1px dashed var(--amber-d);
-    border-radius: 8px; padding: .7rem .9rem; margin-top: 1rem;
-  }
-  .detail-panel .detail-agent .label {
-    font-size: .68rem; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .06em; color: var(--amber);
-  }
-  .detail-panel .detail-agent .text { font-size: .85rem; color: var(--text-dim); margin-top: .2rem; }
-  .detail-panel .placeholder { color: var(--text-dim); font-style: italic; font-size: .9rem; }
-  .detail-steps { list-style: none; counter-reset: dstep; padding: 0; }
-  .detail-steps li {
-    counter-increment: dstep;
-    padding: .3rem 0; font-size: .88rem;
-    display: flex; gap: .5rem;
-  }
-  .detail-steps li::before {
-    content: counter(dstep) ".";
-    font-weight: 700; color: var(--accent); min-width: 1.3rem;
-  }
+  /* ── Agent interaction summary ────────────────────────────────── */
+  .agent-summary { max-width: 1400px; margin: 2.5rem auto 0; }
+  .agent-summary h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem; }
+  .agent-summary h2::before { content: "⚙"; color: var(--amber); font-size: 1.2rem; }
+  .agent-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
+  @media (max-width: 900px) { .agent-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .agent-grid { grid-template-columns: 1fr; } }
+  .agent-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: .9rem 1.1rem; transition: transform .25s ease; }
+  .agent-card:hover { transform: translateY(-3px); }
+  .agent-card .from-to { font-size: .75rem; font-weight: 700; margin-bottom: .3rem; }
+  .agent-card .desc { font-size: .8rem; color: var(--text-dim); }
+  .agent-card .interaction-type { font-size: .68rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-top: .3rem; color: var(--amber); }
 </style>
 </head>
 <body>
 
 <header>
   <h1>Documentation Workflow</h1>
-  <p>Five-phase end-to-end pipeline with feedback loops &mdash; click any phase to expand details</p>
+  <p>Five-phase end-to-end pipeline with feedback loops — click any phase in the diagram or cards below for details</p>
 </header>
 
-<!-- Legend -->
 <div class="legend">
-  <div class="legend-item">
-    <span class="legend-swatch" style="background:var(--accent)"></span>
-    Sequential flow (1 → 2 → 3 → 4 → 5)
-  </div>
-  <div class="legend-item">
-    <span class="legend-swatch" style="background:var(--amber)"></span>
-    Agent interaction
-  </div>
-  <div class="legend-item">
-    <span class="legend-arrow dashed"></span>
-    Feedback loop
-  </div>
+  <div class="legend-item"><span class="legend-swatch" style="background:var(--accent)"></span>Sequential flow (1 → 5)</div>
+  <div class="legend-item"><span class="legend-swatch" style="background:var(--amber)"></span>Agent interaction</div>
+  <div class="legend-item"><span class="legend-swatch" style="background:transparent;border:2px dashed var(--amber)"></span>Feedback loop</div>
 </div>
 
-<!-- ── Workflow ─────────────────────────────────────────────────── -->
-<div class="workflow">
+<!-- ══ SVG FLOW DIAGRAM ══════════════════════════════════════════ -->
+<div class="flow-diagram">
+  <svg viewBox="0 0 1320 400" width="100%">
+    <defs>
+      <marker id="arrow-seq" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+        <path d="M0,0 L8,3 L0,6" fill="#6c8eef"/>
+      </marker>
+      <marker id="arrow-fb" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+        <path d="M0,0 L8,3 L0,6" fill="#f0a04b"/>
+      </marker>
+    </defs>
 
-  <!-- Phase 1 -->
-  <div class="phase-row" id="phaseRow">
+    <!-- ═══ Agent boxes row (y: 20–70) ═══ -->
+    <rect x="30" y="20" width="200" height="50" rx="8" fill="rgba(240,160,75,0.08)" stroke="#c47e33" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="130" y="43" text-anchor="middle" fill="#f0a04b" font-size="11" font-weight="600">⚙ Agent</text>
+    <text x="130" y="59" text-anchor="middle" fill="#f0a04b" font-size="9" opacity="0.8">Proposal</text>
+    <line x1="130" y1="70" x2="130" y2="125" stroke="#f0a04b" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+    <text x="138" y="100" fill="#f0a04b" font-size="8" opacity="0.5">↕</text>
+
+    <rect x="290" y="20" width="200" height="50" rx="8" fill="rgba(240,160,75,0.08)" stroke="#c47e33" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="390" y="43" text-anchor="middle" fill="#f0a04b" font-size="11" font-weight="600">⚙ Agent</text>
+    <text x="390" y="59" text-anchor="middle" fill="#f0a04b" font-size="9" opacity="0.8">Autonomous</text>
+    <line x1="390" y1="70" x2="390" y2="125" stroke="#f0a04b" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+    <text x="398" y="100" fill="#f0a04b" font-size="8" opacity="0.5">↕</text>
+
+    <rect x="550" y="20" width="200" height="50" rx="8" fill="rgba(240,160,75,0.08)" stroke="#c47e33" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="650" y="43" text-anchor="middle" fill="#f0a04b" font-size="11" font-weight="600">⚙ Agent</text>
+    <text x="650" y="59" text-anchor="middle" fill="#f0a04b" font-size="9" opacity="0.8">Generative</text>
+    <line x1="650" y1="70" x2="650" y2="125" stroke="#f0a04b" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+    <text x="658" y="100" fill="#f0a04b" font-size="8" opacity="0.5">↕</text>
+
+    <rect x="810" y="20" width="200" height="50" rx="8" fill="rgba(240,160,75,0.08)" stroke="#c47e33" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="910" y="43" text-anchor="middle" fill="#f0a04b" font-size="11" font-weight="600">⚙ Agent</text>
+    <text x="910" y="59" text-anchor="middle" fill="#f0a04b" font-size="9" opacity="0.8">Automation</text>
+    <line x1="910" y1="70" x2="910" y2="125" stroke="#f0a04b" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+    <text x="918" y="100" fill="#f0a04b" font-size="8" opacity="0.5">↕</text>
+
+    <rect x="1070" y="20" width="200" height="50" rx="8" fill="rgba(240,160,75,0.08)" stroke="#c47e33" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="1170" y="43" text-anchor="middle" fill="#f0a04b" font-size="11" font-weight="600">⚙ Agent</text>
+    <text x="1170" y="59" text-anchor="middle" fill="#f0a04b" font-size="9" opacity="0.8">Monitoring</text>
+    <line x1="1170" y1="70" x2="1170" y2="125" stroke="#f0a04b" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+    <text x="1178" y="100" fill="#f0a04b" font-size="8" opacity="0.5">↕</text>
+
+    <!-- Agent sequential arrows (between agent boxes) -->
+    <line x1="230" y1="45" x2="290" y2="45" stroke="#6c8eef" stroke-width="2" marker-end="url(#arrow-seq)" opacity="0.35"/>
+    <line x1="490" y1="45" x2="550" y2="45" stroke="#6c8eef" stroke-width="2" marker-end="url(#arrow-seq)" opacity="0.35"/>
+    <line x1="750" y1="45" x2="810" y2="45" stroke="#6c8eef" stroke-width="2" marker-end="url(#arrow-seq)" opacity="0.35"/>
+    <line x1="1010" y1="45" x2="1070" y2="45" stroke="#6c8eef" stroke-width="2" marker-end="url(#arrow-seq)" opacity="0.35"/>
+
+    <!-- ═══ Phase boxes row (y: 125–280) ═══ -->
+    <!-- Phase 1 -->
+    <rect x="30" y="125" width="200" height="155" rx="12" fill="#1a1d27" stroke="#4C72B0" stroke-width="2.5"/>
+    <rect x="30" y="125" width="200" height="6" rx="3" fill="#4C72B0"/>
+    <text x="130" y="153" text-anchor="middle" fill="#4C72B0" font-size="10" font-weight="700" letter-spacing="1">PHASE 1</text>
+    <text x="130" y="178" text-anchor="middle" fill="#e4e7ef" font-size="14" font-weight="700">Scope</text>
+    <text x="130" y="194" text-anchor="middle" fill="#e4e7ef" font-size="14" font-weight="700">Identification</text>
+    <text x="130" y="212" text-anchor="middle" fill="#9ca3b4" font-size="10">Define scope</text>
+    <line x1="50" y1="225" x2="210" y2="225" stroke="#353a4a" stroke-width="1"/>
+    <text x="130" y="242" text-anchor="middle" fill="#9ca3b4" font-size="9.5">▸ Target files &amp; audience</text>
+    <text x="130" y="258" text-anchor="middle" fill="#9ca3b4" font-size="9.5">▸ Scope &amp; success criteria</text>
+
+    <!-- Phase 2 -->
+    <rect x="290" y="125" width="200" height="155" rx="12" fill="#1a1d27" stroke="#55A868" stroke-width="2.5"/>
+    <rect x="290" y="125" width="200" height="6" rx="3" fill="#55A868"/>
+    <text x="390" y="153" text-anchor="middle" fill="#55A868" font-size="10" font-weight="700" letter-spacing="1">PHASE 2</text>
+    <text x="390" y="178" text-anchor="middle" fill="#e4e7ef" font-size="14" font-weight="700">File / Logic</text>
+    <text x="390" y="194" text-anchor="middle" fill="#e4e7ef" font-size="14" font-weight="700">Analysis</text>
+    <text x="390" y="212" text-anchor="middle" fill="#9ca3b4" font-size="10">Understand code</text>
+    <line x1="310" y1="225" x2="470" y2="225" stroke="#353a4a" stroke-width="1"/>
+    <text x="390" y="242" text-anchor="middle" fill="#9ca3b4" font-size="9.5">▸ Map modules &amp; APIs</text>
+    <text x="390" y="258" text-anchor="middle" fill="#9ca3b4" font-size="9.5">▸ Trace dependencies</text>
+
+    <!-- Phase 3 -->
+    <rect x="550" y="125" width="200" height="155" rx="12" fill="#1a1d27" stroke="#C44E52" stroke-width="2.5"/>
+    <rect x="550" y="125" width="200" height="6" rx="3" fill="#C44E52"/>
+    <text x="650" y="153" text-anchor="middle" fill="#C44E52" font-size="10" font-weight="700" letter-spacing="1">PHASE 3</text>
+    <text x="650" y="178" text-anchor="middle" fill="#e4e7ef" font-size="14" font-weight="700">Inline</text>
+    <text x="650" y="194" text-anchor="middle" fill="#e4e7ef" font-size="14" font-weight="700">Documentation</text>
+    <text x="650" y="212" text-anchor="middle" fill="#9ca3b4" font-size="10">Write docstrings</text>
+    <line x1="570" y1="225" x2="730" y2="225" stroke="#353a4a" stroke-width="1"/>
+    <text x="650" y="242" text-anchor="middle" fill="#9ca3b4" font-size="9.5">▸ Update docstrings</text>
+    <text x="650" y="258" text-anchor="middle" fill="#9ca3b4" font-size="9.5">▸ Add annotations</text>
+
+    <!-- Phase 4 -->
+    <rect x="810" y="125" width="200" height="155" rx="12" fill="#1a1d27" stroke="#8172B2" stroke-width="2.5"/>
+    <rect x="810" y="125" width="200" height="6" rx="3" fill="#8172B2"/>
+    <text x="910" y="153" text-anchor="middle" fill="#8172B2" font-size="10" font-weight="700" letter-spacing="1">PHASE 4</text>
+    <text x="910" y="178" text-anchor="middle" fill="#e4e7ef" font-size="14" font-weight="700">Sphinx</text>
+    <text x="910" y="194" text-anchor="middle" fill="#e4e7ef" font-size="14" font-weight="700">Generation</text>
+    <text x="910" y="212" text-anchor="middle" fill="#9ca3b4" font-size="10">Build docs</text>
+    <line x1="830" y1="225" x2="990" y2="225" stroke="#353a4a" stroke-width="1"/>
+    <text x="910" y="242" text-anchor="middle" fill="#9ca3b4" font-size="9.5">▸ Run autodoc &amp; build</text>
+    <text x="910" y="258" text-anchor="middle" fill="#9ca3b4" font-size="9.5">▸ Capture warnings</text>
+
+    <!-- Phase 5 -->
+    <rect x="1070" y="125" width="200" height="155" rx="12" fill="#1a1d27" stroke="#CCB974" stroke-width="2.5"/>
+    <rect x="1070" y="125" width="200" height="6" rx="3" fill="#CCB974"/>
+    <text x="1170" y="153" text-anchor="middle" fill="#CCB974" font-size="10" font-weight="700" letter-spacing="1">PHASE 5</text>
+    <text x="1170" y="178" text-anchor="middle" fill="#e4e7ef" font-size="14" font-weight="700">Review &amp;</text>
+    <text x="1170" y="194" text-anchor="middle" fill="#e4e7ef" font-size="14" font-weight="700">Maintenance</text>
+    <text x="1170" y="212" text-anchor="middle" fill="#9ca3b4" font-size="10">Verify &amp; iterate</text>
+    <line x1="1090" y1="225" x2="1250" y2="225" stroke="#353a4a" stroke-width="1"/>
+    <text x="1170" y="242" text-anchor="middle" fill="#9ca3b4" font-size="9.5">▸ Human review</text>
+    <text x="1170" y="258" text-anchor="middle" fill="#9ca3b4" font-size="9.5">▸ Re-run on updates</text>
+
+    <!-- ═══ Sequential arrows (between phase boxes) ═══ -->
+    <line x1="230" y1="202" x2="290" y2="202" stroke="#6c8eef" stroke-width="3" marker-end="url(#arrow-seq)"/>
+    <line x1="490" y1="202" x2="550" y2="202" stroke="#6c8eef" stroke-width="3" marker-end="url(#arrow-seq)"/>
+    <line x1="750" y1="202" x2="810" y2="202" stroke="#6c8eef" stroke-width="3" marker-end="url(#arrow-seq)"/>
+    <line x1="1010" y1="202" x2="1070" y2="202" stroke="#6c8eef" stroke-width="3" marker-end="url(#arrow-seq)"/>
+
+    <!-- ═══ Feedback loop arcs (below phase boxes) ═══ -->
+    <!-- Feedback: Phase 3 → Phase 2 -->
+    <path d="M 650 280 Q 650 325 520 325 Q 390 325 390 280"
+          fill="none" stroke="#f0a04b" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrow-fb)" opacity="0.8"/>
+    <text x="520" y="318" text-anchor="middle" fill="#f0a04b" font-size="9" font-weight="600">↻ re-analyze</text>
+
+    <!-- Feedback: Phase 4 → Phase 3 -->
+    <path d="M 910 280 Q 910 355 780 355 Q 650 355 650 280"
+          fill="none" stroke="#f0a04b" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrow-fb)" opacity="0.8"/>
+    <text x="780" y="348" text-anchor="middle" fill="#f0a04b" font-size="9" font-weight="600">↻ fix docs</text>
+
+    <!-- Feedback: Phase 5 → Phase 1 (long bottom arc) -->
+    <path d="M 1170 280 Q 1170 385 650 385 Q 130 385 130 280"
+          fill="none" stroke="#f0a04b" stroke-width="2.5" stroke-dasharray="6,3" marker-end="url(#arrow-fb)" opacity="0.8"/>
+    <text x="650" y="380" text-anchor="middle" fill="#f0a04b" font-size="9" font-weight="600">↻ CI re-run — code changes restart the workflow</text>
+
+    <!-- ═══ Invisible click overlays on SVG phase boxes ═══ -->
+    <rect class="svg-phase-overlay" data-phase="1" x="30" y="125" width="200" height="155" rx="12" fill="transparent" cursor="pointer"/>
+    <rect class="svg-phase-overlay" data-phase="2" x="290" y="125" width="200" height="155" rx="12" fill="transparent" cursor="pointer"/>
+    <rect class="svg-phase-overlay" data-phase="3" x="550" y="125" width="200" height="155" rx="12" fill="transparent" cursor="pointer"/>
+    <rect class="svg-phase-overlay" data-phase="4" x="810" y="125" width="200" height="155" rx="12" fill="transparent" cursor="pointer"/>
+    <rect class="svg-phase-overlay" data-phase="5" x="1070" y="125" width="200" height="155" rx="12" fill="transparent" cursor="pointer"/>
+  </svg>
+</div>
+
+<!-- ══ Phase detail cards (click to expand) ════════════════════ -->
+<div class="cards-section">
+  <h2>📋 Phase Details — Click to Expand</h2>
+  <div class="phase-grid">
     <div class="phase-card" data-phase="1" style="--phase-color: var(--p1)">
       <div class="phase-header">
         <div class="phase-num">Phase 1</div>
@@ -288,7 +299,6 @@
       </div>
     </div>
 
-    <!-- Phase 2 -->
     <div class="phase-card" data-phase="2" style="--phase-color: var(--p2)">
       <div class="phase-header">
         <div class="phase-num">Phase 2</div>
@@ -315,7 +325,6 @@
       </div>
     </div>
 
-    <!-- Phase 3 -->
     <div class="phase-card" data-phase="3" style="--phase-color: var(--p3)">
       <div class="phase-header">
         <div class="phase-num">Phase 3</div>
@@ -343,7 +352,6 @@
       </div>
     </div>
 
-    <!-- Phase 4 -->
     <div class="phase-card" data-phase="4" style="--phase-color: var(--p4)">
       <div class="phase-header">
         <div class="phase-num">Phase 4</div>
@@ -371,7 +379,6 @@
       </div>
     </div>
 
-    <!-- Phase 5 -->
     <div class="phase-card" data-phase="5" style="--phase-color: var(--p5)">
       <div class="phase-header">
         <div class="phase-num">Phase 5</div>
@@ -397,11 +404,10 @@
         <div class="feedback-note">→ Feedback to Phase 1: code changes restart the workflow</div>
       </div>
     </div>
-  </div><!-- /phase-row -->
+  </div>
+</div>
 
-</div><!-- /workflow -->
-
-<!-- ── Feedback loops ────────────────────────────────────────────── -->
+<!-- ── Feedback loops summary ───────────────────────────────────── -->
 <div class="feedback-section">
   <h2>Feedback Loops</h2>
   <div class="feedback-grid">
@@ -421,41 +427,44 @@
 </div>
 
 <!-- ── Agent interaction summary ─────────────────────────────────── -->
-<div class="feedback-section">
-  <h2 style="font-size:1.1rem;">Agent Interaction Summary</h2>
-  <div class="feedback-grid">
-    <div class="feedback-card" style="border-left-color: var(--p1);">
-      <div class="from-to" style="color:var(--p1);">Phase 1 — Proposal</div>
-      <div class="desc">Suggests scope; waits for human approval. <em>Bidirectional</em></div>
+<div class="agent-summary">
+  <h2>Agent Interaction Summary</h2>
+  <div class="agent-grid">
+    <div class="agent-card" style="border-left: 4px solid var(--p1);">
+      <div class="from-to" style="color:var(--p1);">Phase 1</div>
+      <div class="desc">Suggests scope; waits for human approval.</div>
+      <div class="interaction-type">Bidirectional</div>
     </div>
-    <div class="feedback-card" style="border-left-color: var(--p2);">
-      <div class="from-to" style="color:var(--p2);">Phase 2 — Autonomous</div>
-      <div class="desc">Parses and classifies code. <em>One-way</em> (feeds Phase 3)</div>
+    <div class="agent-card" style="border-left: 4px solid var(--p2);">
+      <div class="from-to" style="color:var(--p2);">Phase 2</div>
+      <div class="desc">Parses and classifies code autonomously.</div>
+      <div class="interaction-type">One-way → Phase 3</div>
     </div>
-    <div class="feedback-card" style="border-left-color: var(--p3);">
-      <div class="from-to" style="color:var(--p3);">Phase 3 — Generative</div>
-      <div class="desc">Writes docstrings, submits diffs for review. <em>Bidirectional</em></div>
+    <div class="agent-card" style="border-left: 4px solid var(--p3);">
+      <div class="from-to" style="color:var(--p3);">Phase 3</div>
+      <div class="desc">Writes docstrings, submits diffs for review.</div>
+      <div class="interaction-type">Bidirectional</div>
     </div>
-    <div class="feedback-card" style="border-left-color: var(--p4);">
-      <div class="from-to" style="color:var(--p4);">Phase 4 — Automation</div>
-      <div class="desc">Runs build commands, captures output. <em>One-way</em></div>
+    <div class="agent-card" style="border-left: 4px solid var(--p4);">
+      <div class="from-to" style="color:var(--p4);">Phase 4</div>
+      <div class="desc">Runs build commands, captures output.</div>
+      <div class="interaction-type">One-way → reports</div>
     </div>
-    <div class="feedback-card" style="border-left-color: var(--p5);">
-      <div class="from-to" style="color:var(--p5);">Phase 5 — Monitoring</div>
-      <div class="desc">Registers CI hooks, surfaces diffs. <em>Bidirectional</em></div>
+    <div class="agent-card" style="border-left: 4px solid var(--p5);">
+      <div class="from-to" style="color:var(--p5);">Phase 5</div>
+      <div class="desc">Registers CI hooks, surfaces diffs.</div>
+      <div class="interaction-type">Bidirectional</div>
     </div>
   </div>
 </div>
 
 <script>
-  // ── Expand/collapse on click ────────────────────────────────────
+  // ── Expand/collapse phase cards ─────────────────────────────────
   const cards = document.querySelectorAll('.phase-card');
   cards.forEach(card => {
     card.addEventListener('click', () => {
       const wasExpanded = card.classList.contains('expanded');
-      // Close all
       cards.forEach(c => { c.classList.remove('expanded'); c.classList.remove('active'); });
-      // Toggle this one
       if (!wasExpanded) {
         card.classList.add('expanded');
         card.classList.add('active');
@@ -463,34 +472,26 @@
     });
   });
 
-  // ── Sequential arrow flow animation ─────────────────────────────
-  // Add subtle pulsing connection indicator between cards
-  const row = document.getElementById('phaseRow');
-  if (row) {
-    const style = document.createElement('style');
-    style.textContent = `
-      .phase-row > .phase-card + .phase-card::before {
-        content: "→";
-        position: absolute;
-        left: -.85rem;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 1.3rem;
-        color: var(--accent);
-        opacity: .35;
-        z-index: 3;
-        transition: opacity .3s ease, transform .3s ease;
+  // ── SVG phase box click → expand corresponding card + scroll ────
+  const phaseColors = { '1': '#4C72B0', '2': '#55A868', '3': '#C44E52', '4': '#8172B2', '5': '#CCB974' };
+  document.querySelectorAll('.svg-phase-overlay').forEach(overlay => {
+    const num = overlay.getAttribute('data-phase');
+    const color = phaseColors[num];
+    overlay.addEventListener('mouseenter', () => { overlay.style.fill = color + '18'; });
+    overlay.addEventListener('mouseleave', () => { overlay.style.fill = 'transparent'; });
+    overlay.addEventListener('click', () => {
+      const card = document.querySelector('.phase-card[data-phase="' + num + '"]');
+      if (card) {
+        const wasExpanded = card.classList.contains('expanded');
+        cards.forEach(c => { c.classList.remove('expanded'); c.classList.remove('active'); });
+        if (!wasExpanded) {
+          card.classList.add('expanded');
+          card.classList.add('active');
+          card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
       }
-      .phase-row > .phase-card:hover + .phase-card::before,
-      .phase-row > .phase-card:hover::before {
-        opacity: .6;
-      }
-      @media (max-width: 900px) {
-        .phase-row > .phase-card + .phase-card::before { display: none; }
-      }
-    `;
-    document.head.appendChild(style);
-  }
+    });
+  });
 </script>
 
 </body>
