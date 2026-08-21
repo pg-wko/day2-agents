@@ -26,7 +26,7 @@ Given a question about a codebase or document set, locate the relevant files, su
 3. **Read** the most relevant files with `read`, using `search` to narrow within large files
 4. **Extract** key snippets using `citation-extract` for precise `file:line` references
 5. **Synthesize** a concise answer with inline citations
-6. ** Emit** a structured answer (see Output Format)
+6. **Emit** a structured answer (see Output Format)
 
 ## Skills Used
 

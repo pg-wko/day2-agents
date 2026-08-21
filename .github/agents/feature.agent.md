@@ -40,6 +40,7 @@ Given an approved requirement (from the Requirements Agent) and an existing code
 | `semantic-search` | Understand existing architecture and find where the feature fits |
 | `impact-graph` | Map which existing modules and tests are affected by the new feature |
 | `citation-extract` | Cite the requirement and source code that justify each test case |
+| `pattern-match-failures` | Verify new test cases target real failure modes and don't duplicate known issues |
 
 ## Output Format
 

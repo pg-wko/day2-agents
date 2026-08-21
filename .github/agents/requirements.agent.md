@@ -38,6 +38,7 @@ Parse specification documents (PRDs, HSD tickets, design docs, wikis, RFCs) and 
 |-------|---------|
 | `citation-extract` | Pull exact quotes and `file:line` / `section` references from spec documents |
 | `semantic-search` | Find related requirements or prior specs across the doc set |
+| `diff-summarize` | When a spec has been revised, summarize what changed between versions and flag impact on existing requirements |
 
 ## Output Format
 

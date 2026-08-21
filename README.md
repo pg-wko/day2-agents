@@ -34,7 +34,7 @@
 |---|-------|---------------|------------|
 | 1 | **Requirements Agent** | Extract testable requirements from specs, flag ambiguity | Reads docs only; never writes code or tests |
 | 2 | **Documentation Agent** | Answer "where is X / what does Y do" with cited evidence | Read-only; every answer must have a citation |
-| 3 | **Debugging Agent** | Triage failures, match against history, rank hypotheses | Never claims "fixed"; outputs hypotheses + next experiment |
+| 3 | **Debugging Agent** | Triage failures (logs, errors, validation results), match against history, rank hypotheses | Never claims "fixed"; outputs hypotheses + next experiment |
 | 4 | **Refactoring Agent** | Propose safe diffs with blast-radius and risk assessment | No direct writes; blocks for human approval before applying |
 | 5 | **Feature Agent** | Turn approved requirements into feature plans + test cases | No production code; outputs feature → TCDs → test cases |
 
