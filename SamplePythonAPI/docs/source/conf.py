@@ -3,7 +3,7 @@ import os
 import sys
 from pathlib import Path
 
-# Add source directory to sys.path
+# Add python source directories to sys.path for autodoc resolution
 sys.path.insert(0, str(Path(r"C:\Users\queenach\Downloads\PracticalAI\Day2\day2-agents\SamplePythonAPI").resolve()))
 sys.path.insert(0, str(Path(r"C:\Users\queenach\Downloads\PracticalAI\Day2\day2-agents\SamplePythonAPI\app").resolve()))
 
@@ -16,7 +16,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
     "sphinx.ext.viewcode",
-    "sphinx.ext.githubpages",
+    "sphinx.ext.githubpages"
 ]
 
 templates_path = ["_templates"]

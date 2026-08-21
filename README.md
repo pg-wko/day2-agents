@@ -143,6 +143,30 @@ Packages an agent's work into a human-reviewable artifact.
 - **Output:** summary, decision needed, risks, confidence, traceable references, and explicit out-of-scope items.
 - **Intended use:** any agent handing findings to a human engineer for review or decision.
 
+### 6. [Sphinx Config Manager](.github/skills/sphinx-config-manager/SKILL.md)
+
+Configures and initializes reproducible Sphinx environments (`conf.py`, `index.rst`, extensions, and themes).
+
+- **Input:** documentation source directory, Python package directory, and project metadata.
+- **Output:** status result with validated `conf.py` and `index.rst` paths.
+- **Intended use:** documentation agents setting up Sphinx documentation workspaces.
+
+### 7. [Sphinx APIDoc Generator](.github/skills/sphinx-apidoc-generator/SKILL.md)
+
+Extracts Python module ASTs into reStructuredText (`.rst`) API stubs using `sphinx-apidoc`.
+
+- **Input:** Python source code directory and target documentation source directory.
+- **Output:** collection of generated `.rst` API definition files.
+- **Intended use:** documentation agents creating or synchronizing API reference stubs.
+
+### 8. [Sphinx Doc Builder](.github/skills/sphinx-doc-builder/SKILL.md)
+
+Compiles Sphinx `.rst` sources and autodoc docstrings into static HTML sites with strict zero-warning verification (`-W`).
+
+- **Input:** documentation source and output build directories.
+- **Output:** compiled static HTML site, search index, and zero-warning build validation record.
+- **Intended use:** agents and CI pipelines compiling and verifying documentation artifacts.
+
 ## Review Workflow
 
 1. An engineer selects the specialist agent that matches the work item.

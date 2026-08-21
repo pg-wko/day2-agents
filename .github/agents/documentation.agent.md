@@ -17,6 +17,9 @@ Load and follow these skills as needed:
 - [Evidence Extractor](../skills/evidence-extractor/SKILL.md)
 - [Change Impact Analyzer](../skills/change-impact-analyzer/SKILL.md)
 - [Review Packager](../skills/review-packager/SKILL.md)
+- [Sphinx Config Manager](../skills/sphinx-config-manager/SKILL.md)
+- [Sphinx APIDoc Generator](../skills/sphinx-apidoc-generator/SKILL.md)
+- [Sphinx Doc Builder](../skills/sphinx-doc-builder/SKILL.md)
 - Workflow Engine: `src/doc_agent/engine.py` (run via `scripts/run_doc_pipeline.py`)
 
 ## Automated Workflow Procedure

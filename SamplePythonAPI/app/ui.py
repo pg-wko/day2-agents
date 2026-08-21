@@ -1,3 +1,5 @@
+"""Web UI dashboard built with NiceGUI for interactive ticket management."""
+
 from nicegui import ui
 
 from app.database import TicketRepository
@@ -5,6 +7,11 @@ from app.models import Ticket, TicketCreate, TicketPriority, TicketStatus, Ticke
 
 
 def mount_ui(repository: TicketRepository) -> None:
+    """Mount the NiceGUI interactive dashboard pages onto the web application.
+
+    Args:
+        repository: The active TicketRepository database interface.
+    """
     @ui.page("/")
     def ticket_dashboard() -> None:
         tickets_container = ui.column().classes("w-full gap-3")

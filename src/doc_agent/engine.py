@@ -279,98 +279,47 @@ class DocumentationWorkflowEngine:
     # Phase 4: Sphinx Automation and Generation
     # =========================================================================
     def phase_4_sphinx_generation(self) -> Path:
-        """Sets up Sphinx configuration, runs sphinx-apidoc, and compiles HTML documentation."""
-        logger.info("[Phase 4] Sphinx Automation: Initializing configuration and building HTML")
+        """Sets up Sphinx configuration, runs sphinx-apidoc, and compiles HTML documentation using Sphinx skills."""
+        logger.info("[Phase 4] Sphinx Automation: Invoking Sphinx skills")
         if self.state != WorkflowState.INLINE_DOCS_APPLIED:
             raise RuntimeError(f"Cannot run Phase 4 from state: {self.state}")
 
-        self.docs_dir.mkdir(parents=True, exist_ok=True)
+        from .sphinx_skills import SphinxApidocGenerator, SphinxConfigManager, SphinxConfigOptions, SphinxDocBuilder
+
         source_doc_dir = self.docs_dir / "source"
         build_doc_dir = self.docs_dir / "build" / "html"
-        source_doc_dir.mkdir(parents=True, exist_ok=True)
 
-        conf_path = source_doc_dir / "conf.py"
-        conf_content = f'''# Configuration file for the Sphinx documentation builder.
-import os
-import sys
-from pathlib import Path
+        # 1. Invoke SphinxConfigManager
+        config_opts = SphinxConfigOptions(
+            project_name=self.project_name,
+            author=self.author,
+            version=self.version,
+        )
+        cfg_result = SphinxConfigManager.setup_configuration(
+            docs_source_dir=source_doc_dir,
+            python_source_dir=self.source_dir,
+            options=config_opts,
+        )
+        if not cfg_result.success:
+            raise RuntimeError(f"SphinxConfigManager failed: {cfg_result.message}")
 
-# Add source directory to sys.path
-sys.path.insert(0, str(Path(r"{self.source_dir.parent}").resolve()))
-sys.path.insert(0, str(Path(r"{self.source_dir}").resolve()))
+        # 2. Invoke SphinxApidocGenerator
+        apidoc_result = SphinxApidocGenerator.generate_api_stubs(
+            python_source_dir=self.source_dir,
+            docs_source_dir=source_doc_dir,
+            force_overwrite=True,
+        )
+        if not apidoc_result.success:
+            logger.warning("SphinxApidocGenerator reported issue: %s", apidoc_result.message)
 
-project = "{self.project_name}"
-copyright = "2026, {self.author}"
-author = "{self.author}"
-release = "{self.version}"
-
-extensions = [
-    "sphinx.ext.autodoc",
-    "sphinx.ext.napoleon",
-    "sphinx.ext.viewcode",
-    "sphinx.ext.githubpages",
-]
-
-templates_path = ["_templates"]
-exclude_patterns = []
-
-html_theme = "sphinx_rtd_theme" if "sphinx_rtd_theme" in sys.modules or os.path.exists(r"{sys.prefix}") else "alabaster"
-html_static_path = []
-'''
-        with open(conf_path, "w", encoding="utf-8") as f:
-            f.write(conf_content)
-
-        index_path = source_doc_dir / "index.rst"
-        index_content = f""".. {self.project_name} documentation master file
-
-Welcome to {self.project_name}'s documentation!
-==================================================
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
-   modules
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-"""
-        with open(index_path, "w", encoding="utf-8") as f:
-            f.write(index_content)
-
-        python_exe = sys.executable
-        apidoc_cmd = [
-            python_exe,
-            "-m",
-            "sphinx.ext.apidoc",
-            "-o",
-            str(source_doc_dir),
-            str(self.source_dir),
-            "-f",
-        ]
-        logger.info("Executing sphinx-apidoc: %s", " ".join(apidoc_cmd))
-        apidoc_res = subprocess.run(apidoc_cmd, capture_output=True, text=True)
-        if apidoc_res.returncode != 0:
-            logger.warning("sphinx-apidoc returned warning/code: %s\n%s", apidoc_res.returncode, apidoc_res.stderr)
-
-        build_cmd = [
-            python_exe,
-            "-m",
-            "sphinx",
-            "-b",
-            "html",
-            str(source_doc_dir),
-            str(build_doc_dir),
-        ]
-        logger.info("Executing sphinx-build: %s", " ".join(build_cmd))
-        build_res = subprocess.run(build_cmd, capture_output=True, text=True)
-        if build_res.returncode != 0:
-            logger.error("sphinx-build failed:\n%s\n%s", build_res.stdout, build_res.stderr)
-            raise RuntimeError(f"Sphinx compilation failed with code {build_res.returncode}: {build_res.stderr}")
+        # 3. Invoke SphinxDocBuilder (with strict warnings validation)
+        build_result = SphinxDocBuilder.build_html(
+            docs_source_dir=source_doc_dir,
+            docs_build_dir=build_doc_dir,
+            strict_warnings=True,
+        )
+        if not build_result.success:
+            raise RuntimeError(f"SphinxDocBuilder failed: {build_result.message} - Errors: {build_result.errors}")
 
         self.sphinx_output_dir = build_doc_dir
         self.state = WorkflowState.SPHINX_GENERATED
