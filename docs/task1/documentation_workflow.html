@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Documentation Workflow — Interactive Diagram</title>
+<style>
+  /* ── Reset & base ─────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:        #0f1117;
+    --surface:   #1a1d27;
+    --surface-2: #232733;
+    --border:    #353a4a;
+    --text:      #e4e7ef;
+    --text-dim:  #9ca3b4;
+    --accent:    #6c8eef;
+    --p1: #4C72B0;  --p1-d: #3a5a94;
+    --p2: #55A868;  --p2-d: #428a52;
+    --p3: #C44E52;  --p3-d: #a23d41;
+    --p4: #8172B2;  --p4-d: #655a92;
+    --p5: #CCB974;  --p5-d: #a8975a;
+    --amber: #f0a04b;
+    --amber-d: #c47e33;
+  }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  /* ── Header ──────────────────────────────────────────────────── */
+  header { text-align: center; max-width: 1200px; margin: 0 auto 2.5rem; }
+  header h1 {
+    font-size: 2rem; font-weight: 700; letter-spacing: -.02em;
+    background: linear-gradient(135deg, #6c8eef, #a78bfa, #f0a04b);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  header p { color: var(--text-dim); margin-top: .5rem; font-size: .95rem; }
+
+  /* ── Legend ──────────────────────────────────────────────────── */
+  .legend {
+    display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;
+    margin-bottom: 2rem; font-size: .82rem; color: var(--text-dim);
+  }
+  .legend-item { display: flex; align-items: center; gap: .4rem; }
+  .legend-swatch {
+    width: 14px; height: 14px; border-radius: 4px; display: inline-block;
+  }
+  .legend-arrow {
+    width: 28px; height: 0; border-top: 2.5px solid #555; display: inline-block;
+    position: relative;
+  }
+  .legend-arrow.solid { border-top-style: solid; border-color: #6c8eef; }
+  .legend-arrow.dashed { border-top-style: dashed; border-color: var(--amber); }
+
+  /* ── Workflow container ──────────────────────────────────────── */
+  .workflow {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 0;
+    position: relative;
+  }
+
+  /* ── Phase row ───────────────────────────────────────────────── */
+  .phase-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    position: relative;
+    z-index: 2;
+  }
+  @media (max-width: 900px) {
+    .phase-row { grid-template-columns: 1fr; gap: 1.5rem; }
+  }
+
+  /* ── Phase card ──────────────────────────────────────────────── */
+  .phase-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 0;
+    cursor: pointer;
+    transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    overflow: hidden;
+    position: relative;
+  }
+  .phase-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,.35);
+    border-color: var(--accent);
+  }
+  .phase-card.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(108,142,239,.3), 0 12px 32px rgba(0,0,0,.35);
+  }
+
+  .phase-header {
+    padding: 1rem 1.1rem .6rem;
+    border-top: 5px solid var(--phase-color);
+  }
+  .phase-num {
+    font-size: .72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; color: var(--phase-color); margin-bottom: .25rem;
+  }
+  .phase-title { font-size: 1.05rem; font-weight: 700; }
+  .phase-subtitle { font-size: .8rem; color: var(--text-dim); margin-top: .15rem; }
+
+  .phase-body { padding: .2rem 1.1rem 1rem; }
+  .phase-details { list-style: none; padding: 0; }
+  .phase-details li {
+    font-size: .8rem; color: var(--text-dim); padding: .2rem 0;
+    display: flex; gap: .4rem; align-items: flex-start;
+  }
+  .phase-details li::before {
+    content: "▸"; color: var(--phase-color); font-size: .7rem; margin-top: .2rem;
+  }
+
+  /* Expandable section */
+  .phase-expand {
+    max-height: 0; overflow: hidden;
+    transition: max-height .35s ease, padding .25s ease;
+    padding: 0 1.1rem;
+    border-top: 1px solid transparent;
+  }
+  .phase-card.expanded .phase-expand {
+    max-height: 600px;
+    padding: .8rem 1.1rem 1.2rem;
+    border-top: 1px solid var(--border);
+  }
+  .phase-steps { list-style: none; counter-reset: step; padding: 0; }
+  .phase-steps li {
+    counter-increment: step;
+    font-size: .8rem; color: var(--text); padding: .35rem 0;
+    display: flex; gap: .5rem;
+  }
+  .phase-steps li::before {
+    content: counter(step) ".";
+    font-weight: 700; color: var(--phase-color); min-width: 1.1rem;
+  }
+  .agent-box {
+    margin-top: .8rem;
+    background: rgba(240,160,75,.08);
+    border: 1px dashed var(--amber-d);
+    border-radius: 8px;
+    padding: .55rem .7rem;
+  }
+  .agent-box .agent-label {
+    font-size: .68rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--amber);
+  }
+  .agent-box .agent-text { font-size: .78rem; color: var(--text-dim); margin-top: .2rem; }
+  .feedback-note {
+    margin-top: .6rem; font-size: .75rem; color: var(--amber);
+    display: flex; gap: .35rem; align-items: flex-start;
+  }
+  .feedback-note::before { content: "↻"; font-size: .9rem; }
+
+  /* ── Arrows between phases (desktop) ─────────────────────────── */
+  .arrow-bar {
+    display: flex; align-items: center; justify-content: center;
+    height: 38px; position: relative; z-index: 1;
+  }
+  .arrow-bar .seq-arrow {
+    font-size: 1.5rem; color: var(--accent); opacity: .6;
+    transition: opacity .3s ease, transform .3s ease;
+  }
+  .phase-card:hover ~ .seq-arrow,
+  .arrow-bar:hover .seq-arrow { opacity: 1; transform: scale(1.1); }
+  @media (max-width: 900px) { .arrow-bar { display: none; } }
+
+  /* ── Feedback loop section ───────────────────────────────────── */
+  .feedback-section {
+    max-width: 1200px; margin: 2.5rem auto 0;
+  }
+  .feedback-section h2 {
+    font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .feedback-section h2::before {
+    content: "↻"; color: var(--amber); font-size: 1.3rem;
+  }
+  .feedback-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+  }
+  @media (max-width: 700px) { .feedback-grid { grid-template-columns: 1fr; } }
+  .feedback-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--amber-d);
+    border-radius: 10px;
+    padding: .9rem 1.1rem;
+    transition: border-color .25s ease, transform .25s ease;
+    cursor: default;
+  }
+  .feedback-card:hover { transform: translateY(-3px); border-left-color: var(--amber); }
+  .feedback-card .from-to {
+    font-size: .75rem; font-weight: 700; color: var(--amber); margin-bottom: .3rem;
+  }
+  .feedback-card .desc { font-size: .82rem; color: var(--text-dim); }
+
+  /* ── Detail panel ────────────────────────────────────────────── */
+  .detail-panel {
+    max-width: 1200px; margin: 2.5rem auto 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem 1.8rem;
+    min-height: 120px;
+    transition: border-color .3s ease;
+  }
+  .detail-panel h3 { font-size: 1.1rem; margin-bottom: .8rem; }
+  .detail-panel .detail-agent {
+    background: rgba(240,160,75,.08);
+    border: 1px dashed var(--amber-d);
+    border-radius: 8px; padding: .7rem .9rem; margin-top: 1rem;
+  }
+  .detail-panel .detail-agent .label {
+    font-size: .68rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--amber);
+  }
+  .detail-panel .detail-agent .text { font-size: .85rem; color: var(--text-dim); margin-top: .2rem; }
+  .detail-panel .placeholder { color: var(--text-dim); font-style: italic; font-size: .9rem; }
+  .detail-steps { list-style: none; counter-reset: dstep; padding: 0; }
+  .detail-steps li {
+    counter-increment: dstep;
+    padding: .3rem 0; font-size: .88rem;
+    display: flex; gap: .5rem;
+  }
+  .detail-steps li::before {
+    content: counter(dstep) ".";
+    font-weight: 700; color: var(--accent); min-width: 1.3rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Documentation Workflow</h1>
+  <p>Five-phase end-to-end pipeline with feedback loops &mdash; click any phase to expand details</p>
+</header>
+
+<!-- Legend -->
+<div class="legend">
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:var(--accent)"></span>
+    Sequential flow (1 → 2 → 3 → 4 → 5)
+  </div>
+  <div class="legend-item">
+    <span class="legend-swatch" style="background:var(--amber)"></span>
+    Agent interaction
+  </div>
+  <div class="legend-item">
+    <span class="legend-arrow dashed"></span>
+    Feedback loop
+  </div>
+</div>
+
+<!-- ── Workflow ─────────────────────────────────────────────────── -->
+<div class="workflow">
+
+  <!-- Phase 1 -->
+  <div class="phase-row" id="phaseRow">
+    <div class="phase-card" data-phase="1" style="--phase-color: var(--p1)">
+      <div class="phase-header">
+        <div class="phase-num">Phase 1</div>
+        <div class="phase-title">Scope Identification</div>
+        <div class="phase-subtitle">Define scope</div>
+      </div>
+      <div class="phase-body">
+        <ul class="phase-details">
+          <li>Target files and audience</li>
+          <li>Scope and success criteria</li>
+        </ul>
+      </div>
+      <div class="phase-expand">
+        <ol class="phase-steps">
+          <li>Identify the target codebase / modules (e.g. <code>SamplePythonAPI/app/</code>)</li>
+          <li>Determine audience (developers, API consumers, new hires) and doc depth</li>
+          <li>Set success criteria and project boundaries</li>
+        </ol>
+        <div class="agent-box">
+          <div class="agent-label">⚙ Agent Action</div>
+          <div class="agent-text">Receives the project path, scans file types (<code>.py</code>, <code>.rst</code>, config files), and proposes a scope boundary document for human approval before proceeding.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase-card" data-phase="2" style="--phase-color: var(--p2)">
+      <div class="phase-header">
+        <div class="phase-num">Phase 2</div>
+        <div class="phase-title">File / Logic Analysis</div>
+        <div class="phase-subtitle">Understand code</div>
+      </div>
+      <div class="phase-body">
+        <ul class="phase-details">
+          <li>Map modules and APIs</li>
+          <li>Trace dependencies</li>
+        </ul>
+      </div>
+      <div class="phase-expand">
+        <ol class="phase-steps">
+          <li>Parse the AST for each Python module (<code>main.py</code>, <code>api.py</code>, <code>models.py</code>, <code>database.py</code>, <code>ui.py</code>)</li>
+          <li>Map class and function dependencies (e.g. <code>TicketRepository</code> ↔ <code>Ticket</code>)</li>
+          <li>Identify public APIs, entry points, and data models</li>
+        </ol>
+        <div class="agent-box">
+          <div class="agent-label">⚙ Agent Action</div>
+          <div class="agent-text">Walks the codebase, builds a symbol dependency map, classifies each module by role (API layer, data layer, UI layer, models), and produces a structured summary that feeds into Phase 3.</div>
+        </div>
+        <div class="feedback-note">Feedback from Phase 3: missing context triggers re-analysis</div>
+      </div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase-card" data-phase="3" style="--phase-color: var(--p3)">
+      <div class="phase-header">
+        <div class="phase-num">Phase 3</div>
+        <div class="phase-title">Inline Documentation</div>
+        <div class="phase-subtitle">Write docstrings</div>
+      </div>
+      <div class="phase-body">
+        <ul class="phase-details">
+          <li>Update docstrings</li>
+          <li>Add missing annotations</li>
+        </ul>
+      </div>
+      <div class="phase-expand">
+        <ol class="phase-steps">
+          <li>Generate / update Google-style module and function docstrings</li>
+          <li>Verify and add type annotations where missing</li>
+          <li>Insert contextual inline comments for complex logic</li>
+        </ol>
+        <div class="agent-box">
+          <div class="agent-label">⚙ Agent Action</div>
+          <div class="agent-text">Writes docstrings for every public symbol, inserts module-level docstrings, validates them with a parser, and returns a diff for human review.</div>
+        </div>
+        <div class="feedback-note">→ Feedback to Phase 2: re-analyze if undocumented symbols found</div>
+        <div class="feedback-note">← Feedback from Phase 4: Sphinx warnings trigger doc fixes</div>
+      </div>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="phase-card" data-phase="4" style="--phase-color: var(--p4)">
+      <div class="phase-header">
+        <div class="phase-num">Phase 4</div>
+        <div class="phase-title">Sphinx Generation</div>
+        <div class="phase-subtitle">Build docs</div>
+      </div>
+      <div class="phase-body">
+        <ul class="phase-details">
+          <li>Run autodoc and build</li>
+          <li>Capture warnings</li>
+        </ul>
+      </div>
+      <div class="phase-expand">
+        <ol class="phase-steps">
+          <li>Configure Sphinx — create <code>conf.py</code>, <code>index.rst</code>, extension list</li>
+          <li>Run <code>sphinx-apidoc</code> to auto-generate RST source files</li>
+          <li>Build HTML output via <code>sphinx-build</code></li>
+          <li>Collect build warnings and broken cross-references</li>
+        </ol>
+        <div class="agent-box">
+          <div class="agent-label">⚙ Agent Action</div>
+          <div class="agent-text">Scaffolds the Sphinx project structure, invokes <code>sphinx-apidoc</code> and <code>sphinx-build</code> programmatically, captures stdout/stderr, and classifies warnings for triage.</div>
+        </div>
+        <div class="feedback-note">→ Feedback to Phase 3: fix inline docs on warnings</div>
+      </div>
+    </div>
+
+    <!-- Phase 5 -->
+    <div class="phase-card" data-phase="5" style="--phase-color: var(--p5)">
+      <div class="phase-header">
+        <div class="phase-num">Phase 5</div>
+        <div class="phase-title">Review &amp; Maintenance</div>
+        <div class="phase-subtitle">Verify and iterate</div>
+      </div>
+      <div class="phase-body">
+        <ul class="phase-details">
+          <li>Human review</li>
+          <li>Re-run on updates</li>
+        </ul>
+      </div>
+      <div class="phase-expand">
+        <ol class="phase-steps">
+          <li>Human reviewer checks generated docs for accuracy, completeness, and tone</li>
+          <li>Fix any remaining warnings or broken references from the Sphinx build</li>
+          <li>Set up CI hooks (pre-commit, GitHub Actions) to re-run the pipeline on code changes</li>
+        </ol>
+        <div class="agent-box">
+          <div class="agent-label">⚙ Agent Action</div>
+          <div class="agent-text">Surfaces a structured review document (diff of new/changed docstrings, list of Sphinx warnings resolved/unresolved), and registers a CI task that re-triggers the full pipeline on every push to main.</div>
+        </div>
+        <div class="feedback-note">→ Feedback to Phase 1: code changes restart the workflow</div>
+      </div>
+    </div>
+  </div><!-- /phase-row -->
+
+</div><!-- /workflow -->
+
+<!-- ── Feedback loops ────────────────────────────────────────────── -->
+<div class="feedback-section">
+  <h2>Feedback Loops</h2>
+  <div class="feedback-grid">
+    <div class="feedback-card">
+      <div class="from-to">Phase 3 → Phase 2</div>
+      <div class="desc">Missing context or undocumented public symbols discovered during docstring generation triggers re-analysis of the relevant modules.</div>
+    </div>
+    <div class="feedback-card">
+      <div class="from-to">Phase 4 → Phase 3</div>
+      <div class="desc">Sphinx build warnings — missing docstrings, broken references, RST errors — loop back to fix inline documentation before re-running the build.</div>
+    </div>
+    <div class="feedback-card">
+      <div class="from-to">Phase 5 → Phase 1</div>
+      <div class="desc">When code changes are merged, the CI hook sends the agent back to Phase 1 to re-scope and re-run the entire documentation pipeline.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Agent interaction summary ─────────────────────────────────── -->
+<div class="feedback-section">
+  <h2 style="font-size:1.1rem;">Agent Interaction Summary</h2>
+  <div class="feedback-grid">
+    <div class="feedback-card" style="border-left-color: var(--p1);">
+      <div class="from-to" style="color:var(--p1);">Phase 1 — Proposal</div>
+      <div class="desc">Suggests scope; waits for human approval. <em>Bidirectional</em></div>
+    </div>
+    <div class="feedback-card" style="border-left-color: var(--p2);">
+      <div class="from-to" style="color:var(--p2);">Phase 2 — Autonomous</div>
+      <div class="desc">Parses and classifies code. <em>One-way</em> (feeds Phase 3)</div>
+    </div>
+    <div class="feedback-card" style="border-left-color: var(--p3);">
+      <div class="from-to" style="color:var(--p3);">Phase 3 — Generative</div>
+      <div class="desc">Writes docstrings, submits diffs for review. <em>Bidirectional</em></div>
+    </div>
+    <div class="feedback-card" style="border-left-color: var(--p4);">
+      <div class="from-to" style="color:var(--p4);">Phase 4 — Automation</div>
+      <div class="desc">Runs build commands, captures output. <em>One-way</em></div>
+    </div>
+    <div class="feedback-card" style="border-left-color: var(--p5);">
+      <div class="from-to" style="color:var(--p5);">Phase 5 — Monitoring</div>
+      <div class="desc">Registers CI hooks, surfaces diffs. <em>Bidirectional</em></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Expand/collapse on click ────────────────────────────────────
+  const cards = document.querySelectorAll('.phase-card');
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      const wasExpanded = card.classList.contains('expanded');
+      // Close all
+      cards.forEach(c => { c.classList.remove('expanded'); c.classList.remove('active'); });
+      // Toggle this one
+      if (!wasExpanded) {
+        card.classList.add('expanded');
+        card.classList.add('active');
+      }
+    });
+  });
+
+  // ── Sequential arrow flow animation ─────────────────────────────
+  // Add subtle pulsing connection indicator between cards
+  const row = document.getElementById('phaseRow');
+  if (row) {
+    const style = document.createElement('style');
+    style.textContent = `
+      .phase-row > .phase-card + .phase-card::before {
+        content: "→";
+        position: absolute;
+        left: -.85rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.3rem;
+        color: var(--accent);
+        opacity: .35;
+        z-index: 3;
+        transition: opacity .3s ease, transform .3s ease;
+      }
+      .phase-row > .phase-card:hover + .phase-card::before,
+      .phase-row > .phase-card:hover::before {
+        opacity: .6;
+      }
+      @media (max-width: 900px) {
+        .phase-row > .phase-card + .phase-card::before { display: none; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+</script>
+
+</body>
+</html>
