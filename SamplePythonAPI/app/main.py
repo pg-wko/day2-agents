@@ -1,3 +1,10 @@
+"""Runtime entry point for the SamplePythonAPI ticketing system.
+
+The application assembles the FastAPI service, binds it to a repository-backed
+REST API, mounts the NiceGUI dashboard, and exposes a health endpoint used by
+monitoring and local development.
+"""
+
 import os
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
@@ -12,12 +19,23 @@ from app.ui import mount_ui
 
 
 def create_app(database_path: str | None = None, seed: bool = True) -> FastAPI:
+    """Build the FastAPI app and attach the repository-backed dashboard and routes.
+
+    Args:
+        database_path: Optional database path override. Defaults to the environment
+            value ``TICKET_DB_PATH`` or ``data/tickets.duckdb``.
+        seed: Whether to populate the database with default demo tickets.
+
+    Returns:
+        A configured FastAPI application with the JSON API and NiceGUI UI mounted.
+    """
     repository = TicketRepository(database_path or os.getenv("TICKET_DB_PATH", "data/tickets.duckdb"))
     if seed:
         repository.seed_defaults()
 
     @asynccontextmanager
     async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+        """Ensure the repository closes cleanly when the application shuts down."""
         try:
             yield
         finally:
@@ -28,6 +46,7 @@ def create_app(database_path: str | None = None, seed: bool = True) -> FastAPI:
 
     @app.get("/health")
     def health() -> dict[str, str]:
+        """Return the service health payload used by health-check systems."""
         return {"status": "ok"}
 
     mount_ui(repository)

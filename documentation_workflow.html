@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automated Documentation Workflow</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --card-border: #334155;
+      --accent: #38bdf8;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --human-bg: #fef3c7;
+      --human-border: #d97706;
+      --human-text: #78350f;
+      --artifact-bg: #064e3b;
+      --artifact-border: #10b981;
+      --artifact-text: #a7f3d0;
+      --tool-bg: #334155;
+      --tool-border: #64748b;
+    }
+
+    body {
+      margin: 0;
+      padding: 30px;
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+    }
+
+    .svg-wrapper {
+      background: #090d16;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      margin-bottom: 40px;
+      overflow-x: auto;
+    }
+
+    .svg-wrapper svg {
+      width: 100%;
+      height: auto;
+      min-width: 900px;
+    }
+
+    /* Notes Table Section */
+    .notes-section {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-top: 0;
+      color: var(--accent);
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--card-border);
+      font-size: 0.95rem;
+    }
+
+    th {
+      background-color: rgba(56, 189, 248, 0.1);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    tr:hover {
+      background-color: rgba(255, 255, 255, 0.02);
+    }
+
+    .badge-agent {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: rgba(56, 189, 248, 0.15);
+      color: #38bdf8;
+      border: 1px solid #38bdf8;
+    }
+
+    .badge-skill {
+      color: #bae6fd;
+      font-family: monospace;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Automated Documentation Workflow</h1>
+      <p class="subtitle">End-to-End lifecycle mapping the Documentation Agent, reusable skills, and human checkpoints</p>
+    </header>
+
+    <div class="svg-wrapper">
+      <!-- Insert Embedded SVG -->
+      <object type="image/svg+xml" data="documentation_workflow.svg" style="width:100%;"></object>
+    </div>
+
+    <div class="notes-section">
+      <h2>Workflow Phase Breakdown &amp; Explanatory Notes</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>Description &amp; Purpose</th>
+            <th>Documentation Agent Interaction</th>
+            <th>Outputs / Artifacts</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Scope Identification</strong></td>
+            <td>Detects and establishes boundaries for changes, features, or investigations requiring documentation updates.</td>
+            <td><span class="badge-agent">Active</span> Uses <span class="badge-skill">change-impact-analyzer</span> to map modified APIs and identify target audiences.</td>
+            <td>Documentation Scope Specification</td>
+          </tr>
+          <tr>
+            <td><strong>2. File/Logic Analysis</strong></td>
+            <td>Analyzes source code AST, signatures, models, and tests without hallucinating or inventing unsupported behavior.</td>
+            <td><span class="badge-agent">Active</span> Uses <span class="badge-skill">evidence-extractor</span> to pull typed contracts, parameters, return types, and exceptions.</td>
+            <td>Extracted Fact Base &amp; API Contracts</td>
+          </tr>
+          <tr>
+            <td><strong>3. Inline Documentation Application</strong></td>
+            <td>Applies standardized docstrings (Sphinx/Google format), type annotations, and module header docs directly to code.</td>
+            <td><span class="badge-agent">Active</span> Drafts and formats accurate inline docstrings directly matching the extracted fact base.</td>
+            <td>Documented Source Files</td>
+          </tr>
+          <tr>
+            <td><strong>4. Sphinx Automation &amp; Generation</strong></td>
+            <td>Executes the build pipeline to compile documentation via <code>sphinx-apidoc</code> and <code>make html</code> / <code>sphinx-build</code>.</td>
+            <td><em>Pipeline Tooling</em> (Automated Sphinx compilation of docstrings and <code>.rst</code> tree into HTML/PDF).</td>
+            <td>Static HTML Web Portal &amp; API Reference</td>
+          </tr>
+          <tr>
+            <td><strong>5. Review &amp; Maintenance</strong></td>
+            <td>Validates generated docs, verifies accuracy, checks edge claims, and obtains human sign-off before publishing.</td>
+            <td><span class="badge-agent">Active</span> Uses <span class="badge-skill">review-packager</span> to package diffs, evidence links, and checklists for human review.</td>
+            <td><strong>Engineering Review Package</strong> &rarr; Published Docs</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

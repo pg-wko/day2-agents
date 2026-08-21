@@ -1,3 +1,9 @@
+"""NiceGUI dashboard for managing support tickets.
+
+The module mounts the web interface for the ticketing system and wires the
+browser form actions to the repository layer.
+"""
+
 from nicegui import ui
 
 from app.database import TicketRepository
@@ -5,8 +11,11 @@ from app.models import Ticket, TicketCreate, TicketPriority, TicketStatus, Ticke
 
 
 def mount_ui(repository: TicketRepository) -> None:
+    """Mount the NiceGUI ticket dashboard for the provided repository instance."""
+
     @ui.page("/")
     def ticket_dashboard() -> None:
+        """Render the dashboard page and connect filters, creation, and updates to the repository."""
         tickets_container = ui.column().classes("w-full gap-3")
         status_filter = ui.select(
             ["all", *[status.value for status in TicketStatus]],
@@ -21,11 +30,13 @@ def mount_ui(repository: TicketRepository) -> None:
         search = ui.input("Search").props("clearable").classes("w-72")
 
         def current_tickets() -> list[Ticket]:
+            """Return the tickets matching the current filter state."""
             return repository.list(
                 filters=None if status_filter.value == priority_filter.value == "all" and not search.value else _filters()
             )
 
         def _filters():
+            """Translate the current UI selections into a `TicketFilters` payload."""
             from app.models import TicketFilters
 
             return TicketFilters(
@@ -35,6 +46,7 @@ def mount_ui(repository: TicketRepository) -> None:
             )
 
         def refresh() -> None:
+            """Re-render the ticket list from the repository using the active filters."""
             tickets_container.clear()
             with tickets_container:
                 tickets = current_tickets()
@@ -45,6 +57,7 @@ def mount_ui(repository: TicketRepository) -> None:
                     render_ticket(ticket)
 
         def create_ticket() -> None:
+            """Create a new ticket from the form inputs and refresh the list."""
             try:
                 repository.create(
                     TicketCreate(
@@ -65,6 +78,7 @@ def mount_ui(repository: TicketRepository) -> None:
             refresh()
 
         def render_ticket(ticket: Ticket) -> None:
+            """Display one ticket card with status and priority controls."""
             with ui.card().classes("w-full rounded-lg border border-gray-200 shadow-sm"):
                 with ui.row().classes("w-full items-start justify-between gap-4"):
                     with ui.column().classes("gap-1"):
@@ -81,6 +95,7 @@ def mount_ui(repository: TicketRepository) -> None:
                         ui.label(f"Priority: {ticket.priority.value}").classes("text-sm font-medium uppercase text-gray-500")
 
         def update_status(ticket_id: int, status_value: str) -> None:
+            """Update a ticket status and refresh the dashboard."""
             repository.update(ticket_id, TicketUpdate(status=TicketStatus(status_value)))
             ui.notify("Ticket updated", color="positive")
             refresh()

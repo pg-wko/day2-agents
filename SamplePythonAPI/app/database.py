@@ -1,3 +1,9 @@
+"""DuckDB-backed persistence layer for the SamplePythonAPI ticketing app.
+
+The repository provides thread-safe CRUD operations for support tickets and a
+small default seed dataset used when the app starts without an existing database.
+"""
+
 from collections.abc import Iterable
 from datetime import UTC, datetime
 from pathlib import Path
@@ -9,11 +15,14 @@ from app.models import Ticket, TicketCreate, TicketFilters, TicketPriority, Tick
 
 
 class TicketNotFoundError(LookupError):
-    pass
+    """Raised when a requested ticket cannot be found in the repository."""
 
 
 class TicketRepository:
+    """Persist and query support tickets in a DuckDB database."""
+
     def __init__(self, database_path: str | Path = "data/tickets.duckdb") -> None:
+        """Create a repository and initialize the database schema if it does not exist."""
         self.database_path = str(database_path)
         path = Path(self.database_path)
         if self.database_path != ":memory:":
@@ -23,9 +32,11 @@ class TicketRepository:
         self._initialize()
 
     def close(self) -> None:
+        """Close the underlying DuckDB connection."""
         self._connection.close()
 
     def _initialize(self) -> None:
+        """Ensure the ticket table and identity sequence exist."""
         with self._lock:
             self._connection.execute(
                 """
@@ -44,6 +55,7 @@ class TicketRepository:
             )
 
     def seed_defaults(self) -> None:
+        """Insert a small sample set of tickets when the database is empty."""
         with self._lock:
             count = self._connection.execute("SELECT count(*) FROM tickets").fetchone()[0]
         if count:
@@ -73,6 +85,7 @@ class TicketRepository:
             self.create(ticket)
 
     def create(self, ticket: TicketCreate) -> Ticket:
+        """Insert a new ticket and return the stored Pydantic model."""
         now = self._now()
         with self._lock:
             row = self._connection.execute(
@@ -94,6 +107,7 @@ class TicketRepository:
         return self._row_to_ticket(row)
 
     def list(self, filters: TicketFilters | None = None) -> list[Ticket]:
+        """Return tickets matching the optional status, priority, and text filters."""
         filters = filters or TicketFilters()
         where_parts: list[str] = []
         parameters: list[str] = []
@@ -119,6 +133,7 @@ class TicketRepository:
         return [self._row_to_ticket(row) for row in rows]
 
     def get(self, ticket_id: int) -> Ticket:
+        """Fetch a ticket by id or raise a configured lookup error when missing."""
         with self._lock:
             row = self._connection.execute("SELECT * FROM tickets WHERE id = ?", [ticket_id]).fetchone()
         if row is None:
@@ -126,6 +141,7 @@ class TicketRepository:
         return self._row_to_ticket(row)
 
     def update(self, ticket_id: int, update: TicketUpdate) -> Ticket:
+        """Apply a partial update to the ticket and return the updated model."""
         changes = update.model_dump(exclude_unset=True)
         if not changes:
             return self.get(ticket_id)
@@ -150,6 +166,7 @@ class TicketRepository:
         return self._row_to_ticket(row)
 
     def delete(self, ticket_id: int) -> None:
+        """Delete an existing ticket by id and raise an error if it is missing."""
         with self._lock:
             deleted = self._connection.execute(
                 "DELETE FROM tickets WHERE id = ? RETURNING id",
@@ -160,9 +177,11 @@ class TicketRepository:
 
     @staticmethod
     def _now() -> datetime:
+        """Return the current UTC timestamp in a format compatible with DuckDB."""
         return datetime.now(UTC).replace(tzinfo=None)
 
     @staticmethod
     def _row_to_ticket(row: Iterable[object]) -> Ticket:
+        """Convert a DB row into the corresponding ticket Pydantic model."""
         keys = ["id", "title", "description", "requester", "priority", "status", "created_at", "updated_at"]
         return Ticket.model_validate(dict(zip(keys, row, strict=True)))
